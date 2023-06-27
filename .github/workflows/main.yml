@@ -13,12 +13,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Rregistry Npm
+      - name: Register npmjs
         run:  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - name: Install NPM
         run:  npm install
       - name: Run Test  
-              npm test -- wl --runInBand
+        run:  npm test -- wl --runInBand
 
         
       
