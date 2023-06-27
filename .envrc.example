@@ -1,0 +1,6 @@
+DOMAIN=develop.testing.tutorme.dev
+DEBUG=false
+PLAYWRIGHT_PRODUCT=chrome
+DELAY=1000
+RECORD_VIDEO=false
+VERBOSE=true

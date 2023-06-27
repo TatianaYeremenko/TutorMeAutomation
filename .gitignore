@@ -1,0 +1,4 @@
+/node_modules
+/.envrc
+/lib/reporter.js
+/video

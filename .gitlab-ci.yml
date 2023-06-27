@@ -1,0 +1,304 @@
+variables:
+  GIT_DEPTH: 10
+
+stages:
+  - test 
+
+default:
+  before_script:
+  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+  - npm install
+  - export DOMAIN=develop.testing.tutorme.dev
+
+test_UserAccount:
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- userAccount --runInBand --logHeapUsage 
+    - echo "User Account tests have finished"
+  retry: 0 
+
+test_TutorsSignUp:
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- TutorsSignUp --runInBand --logHeapUsage 
+    - echo "Tutors SignUp tests have finished"
+  retry: 0 
+
+test_SignIn:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- SignIn  --runInBand --logHeapUsage 
+    - echo "SignIn test has finished"
+  retry: 1   
+
+test_Footer:
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- Footer --runInBand --logHeapUsage 
+    - echo "Tutors SignUp tests have finished"
+  retry: 0 
+
+test_MatchWithTutor:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: true  
+  script:
+    - npm test -- matchWithTutor --runInBand --logHeapUsage 
+    - echo "Match With Tutor tests have finished"
+  retry: 0 
+
+test_MultipleQueueing:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: true  
+  script:
+    - npm test -- multipleQueueing1step-students-requests.test.ts
+    - npm test -- multipleQueueing2step-cleanup-multiple-students-requests.test.ts
+    - echo "Multiple Queueing tests have finished"
+  retry: 0 
+
+test_StudentAccountCreation:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- studentAccountCreation --runInBand --logHeapUsage
+    - echo "Student Account Creation tests have finished"
+  retry: 0 
+
+test_TutorsDashboard:
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- tutorDashboard --runInBand --logHeapUsage 
+    - echo "Tutors Dashboard tests have finished"
+  retry: 0  
+
+# test_SearchBrowseTutors:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- searchBrowse --runInBand --logHeapUsage
+#     - echo "Search Browse tests have finished"
+#   retry: 0 
+
+# test_Admin:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- adminTutoringSessions --runInBand
+#     - echo "Admin Tutoring Sessions test has finished"
+#   retry: 1    
+
+# test_Admin_Screenshot_Recording:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: true  
+#   script:
+#     - npm test -- adminTutoringVideoScreenshot.test
+#     - echo "Screenshot recording is displaying correctly"
+#   retry: 0 
+
+test_BecomeTutor:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- BecomeTutor --runInBand
+    - echo "Become a Tutor application tests have finished"
+  retry: 1
+
+test_ApprovedTutor:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- becomeTutor-application.test.ts
+    - npm test -- approvedTutorApplication.test.ts
+    - echo "Tutor application got approved"
+  retry: 1  
+
+test_BYOT:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- e2e-BYOT.test.ts
+    - echo "BYOT tests tests have finished"
+  retry: 0  
+
+test_FPT:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- e2e-FPT.test
+    - echo "FPT tests tests have finished"
+  retry: 0  
+  
+test_PPT:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- e2e-PPT.test.ts
+    - echo "PPT tests tests have finished"
+  retry: 0  
+
+test_VIPkids:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- e2e-VIPkids.test
+    - echo "VIPkids tests tests have finished"
+  retry: 0  
+
+test_WLcheck:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: true  
+  script:
+    - npm test -- e2e-WritingLabCheck.test.ts
+    - echo "WL avalable for a tutor check has finished"
+  retry: 0  
+
+test_BGcheck:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: true  
+  script:
+    - npm test -- e2e-BGcheck.test
+    - echo "Dashboard for Tutor with BG test has finished"
+  retry: 0 
+
+test_NoLiveLessons:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: true  
+  script:
+    - npm test -- e2e-NoLiveLessons.test
+    - echo "Dashboard for Tutor with No LiveLessons test has finished"
+  retry: 0 
+
+test_OtherTypes:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- other  --runInBand
+    - echo "Other tutor types tests tests have finished"
+  retry: 0   
+
+test_noConcierge:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- e2e-noConcierge.test
+    - echo "NoConcierge tutor type tests tests have finished"
+  retry: 0  
+
+test_WritingLab:
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- wl --runInBand    
+    - echo "WL test has finished"
+  retry: 1 
+
+test_LessonSpace:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: true  
+  script:
+    - npm test -- lessonSpaceFeatures  --runInBand
+    - echo "Demo Space test has finished"
+  retry: 0
+
+test_LessonSpaceDemo:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- lessonSpaceDemo --runInBand
+    - echo "Lesson Features test has finished"
+  retry: 0 
+
+# pending_Fixing:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: true  
+#   script:
+#     - npm test -- NEED_TO_BE_FIXED-reset-password.test.ts 
+#     - echo "Need to be fixed"
+#   retry: 0   
+
+# test_SAFARI:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: true  
+#   script:
+#     - export PLAYWRIGHT_PRODUCT=safari
+#     - npm test -- wl-1-submit-paper.test.ts
+
+# test_FIREFOX:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: true  
+#   script:
+#     - export PLAYWRIGHT_PRODUCT=firefox
+#     - npm test -- wl-1-submit-paper.test.ts
+
+
+# old run      
+#  - npm test -- feature e2e --runInBand
+#  - npm test -- e2e --runInBand
+    
+# Victor's code:
+# image: mcr.microsoft.com/playwright:focal
+
+# stages:
+#   - test
+
+# jest:
+#   stage: test
+#   script: 
+#     echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+#     npm install
+#     npm test -- e2e feature --runInBand

@@ -1,0 +1,5 @@
+Could you please help me with this homework assignment?
+
+Aaron’s candy container is 20 centimeters tall, 10 centimeters long and 10 centimeters wide. 
+Bruce’s container is 25 centimeters tall, 9 centimeters long and 9 centimeters wide. 
+Find the volume of each container. Based on volume, whose container can hold more candy?
