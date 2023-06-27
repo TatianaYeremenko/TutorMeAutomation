@@ -13,10 +13,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Run Tests
+      - name: Rregistry Npm
         run:  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-              npm install
-              export DOMAIN=develop.testing.tutorme.dev
+      - name: Install NPM
+        run:  npm install
+      - name: Run Test  
               npm test -- wl --runInBand
 
         
