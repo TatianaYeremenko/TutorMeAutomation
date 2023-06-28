@@ -13,7 +13,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - uses: stefanoeb/jest-action@1.0.3
       - name: Register npmjs
         run:  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - name: Run test
