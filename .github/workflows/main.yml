@@ -16,7 +16,7 @@ jobs:
       - name: Register npmjs
         run:  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - name: Install NPM
-        run:  npm install
+        run:  npm install npm@latest -g
       - name: Run Test
         run:  npm test -- wl --runInBand
 
