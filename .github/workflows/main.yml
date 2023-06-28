@@ -18,7 +18,7 @@ jobs:
       - name: Install NPM
         run:  npm install npm@latest -g
       - name: Run Test
-        run:  yarn run test  -- e2e-WritingLabCheck.test.ts
+        run:  yarn run test
 
         
       
