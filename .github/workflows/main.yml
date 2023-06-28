@@ -17,8 +17,7 @@ jobs:
         run:  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - name: Install NPM
         run:  npm install npm@latest -g
-      - name: Run Test
-        run:  npm test -- e2e-WritingLabCheck.test.ts
-
-        
-      
+      - name: Install modules
+        run: yarn  
+      - name: Run tests
+        run: yarn test
