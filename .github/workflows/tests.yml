@@ -7,12 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Register npmjs
-        run:  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - name: Test using Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '12'
+      - run:  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc    
       - run: yarn install
       - run: yarn test:ci
 
