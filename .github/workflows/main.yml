@@ -18,7 +18,7 @@ jobs:
       - name: Install NPM
         run:  npm install
       - name: Run Test
-        run:  npm test -- wl --runInBand
+        run:  npm test -- e2e-WritingLabCheck.test.ts
 
         
       
