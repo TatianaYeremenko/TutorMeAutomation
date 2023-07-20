@@ -9,6 +9,8 @@ default:
   - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
   - npm install
   - export DOMAIN=develop.testing.tutorme.dev
+# export DOMAIN=app.testing.tutorme.com
+
 
 test_UserAccount:
   tags: 

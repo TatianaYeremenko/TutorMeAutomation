@@ -27,19 +27,18 @@ it.each`
     ]);
 
     //click on avatar
-    await struct.header.userTools.avatar.click();
+    await struct.header.userTools.username.click();
     await struct.userMenu.switchTooltip.waitForVisible();
     expect(await struct.userMenu.switchTooltip.text()).toBe(
       "When turned off, you are in student mode and can receive tutoring."
     );
-
     //click on switch
     await struct.userMenu.switch.click();
 
     // click on Continue
     await struct.modals.tutorApplicationRejected.waitForVisible();
-    await struct.modals.tutorApplicationRejected.content.continue.waitForVisible();
-    await struct.modals.tutorApplicationRejected.content.continue.click();
+    await struct.modals.tutorApplicationRejected.content.close.waitForVisible();
+    await struct.modals.tutorApplicationRejected.content.close.click();
 
     await page.waitForTimeout(1000);
 

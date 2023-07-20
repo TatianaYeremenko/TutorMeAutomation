@@ -25,8 +25,8 @@ let browser: playwright.Browser;
 
 const isDebug = process.env.DEBUG === "true";
 const delay = parseInt(process.env.DELAY ?? "0") || 0;
-const width = 1280;
-const height = 960;
+const width = 1200;
+const height = 768;
 
 // By default, the Playwright tests run on a default viewport size of 1280x720 .
 //1024x768, 1280x960, 1280x1024, 1600x1200 and 1920x1080

@@ -5,7 +5,7 @@ describe("Become a Tutor Incomplete form:", () => {
   it.only(
     "User should be able to complete Incomplete form" + product,
     async () => {
-      const { struct, page } = await createVisitor();
+      const { struct: struct, page } = await createVisitor();
 
       //click on Apply Today
       await struct.authPages.signIn.applyToTutor.waitForVisible();
@@ -63,21 +63,19 @@ describe("Become a Tutor Incomplete form:", () => {
       await struct.tutorApp.profile.avatar.input.selectFiles(
         malesExamples[faker.datatype.number(4)]
       );
-      await page.waitForTimeout(200);
-      await (
-        await page.waitForSelector('//div[contains(text(),"Crop and Save")]')
-      ).click();
-      await page.waitForTimeout(200);
+      await page.waitForTimeout(500);
+      await struct.modals.changeAvatar.content.crop.click();
+      await page.waitForTimeout(500);
 
       //select where are you in life
       await struct.tutorApp.profile.life.select.click();
-      await struct.tutorApp.profile.life.select.press("ArrowDown");
-      await struct.tutorApp.profile.life.select.press("Enter");
+      await page.getByTestId('tutorApp.profile.life.option(career).option').click();
 
       //phone number
       let tutorPhone = faker.datatype.number(9) + "12345678901234";
       await struct.tutorApp.profile.phone.waitForVisible();
-      await struct.tutorApp.profile.phone.type(tutorPhone.toString());
+      await struct.tutorApp.profile.phone.type(tutorPhone);
+
 
       await struct.tutorApp.profile.submit.click();
 
@@ -110,8 +108,8 @@ describe("Become a Tutor Incomplete form:", () => {
       ]);
 
       //click on Become a Tutor
-      await r.struct.header.userTools.avatar.waitForVisible();
-      await r.struct.header.userTools.avatar.click();
+      await r.struct.header.userTools.username.waitForVisible();
+      await r.struct.header.userTools.username.click();
       await r.struct.userMenu.becomeATutor.click();
 
       // check if first and last name are correct
@@ -139,16 +137,17 @@ describe("Become a Tutor Incomplete form:", () => {
         "Best K-12 Math Tutor",
         "20+ years in Teaching",
       ];
+   
+
       await r.struct.tutorApp.tutorProfile.headline.waitForVisible();
       await r.struct.tutorApp.tutorProfile.headline.fill(
         headLine[faker.datatype.number(2)]
       );
 
       //select gender
-      await r.struct.tutorApp.tutorProfile.gender.select.waitForVisible();
-      await r.struct.tutorApp.tutorProfile.gender.select.type("Female");
-      await r.struct.tutorApp.tutorProfile.gender.select.press("ArrowDown");
-      await r.struct.tutorApp.tutorProfile.gender.select.press("Enter");
+      await r.struct.tutorApp.tutorProfile.gender.select.click();
+      await r.struct.tutorApp.tutorProfile.gender.option(1).option.click();
+
 
       //type about
       await r.struct.tutorApp.tutorProfile.about.waitForVisible();
@@ -158,12 +157,15 @@ describe("Become a Tutor Incomplete form:", () => {
 
       //type about
       await r.struct.tutorApp.tutorProfile.teaching.waitForVisible();
-      await r.struct.tutorApp.tutorProfile.teaching.fill(
-        faker.lorem.sentence(3)
-      );
+      await r.struct.tutorApp.tutorProfile.teaching.fill(faker.lorem.sentence(3));
 
       //remove work experience
-      await r.struct.tutorApp.tutorProfile.work(0).remove.click();
+      await r.page.locator('//button[contains(text(),"Remove")]').click();
+      
+
+      // pagedown 
+      await r.page.keyboard.down('End'); 
+
 
       //select college
       await r.struct.tutorApp.tutorProfile
@@ -172,7 +174,7 @@ describe("Become a Tutor Incomplete form:", () => {
       await r.struct.tutorApp.tutorProfile
         .education(0)
         .college.select.type("Los Angeles City College");
-      await r.page.waitForTimeout(200);
+      await r.page.waitForTimeout(500);
       await r.struct.tutorApp.tutorProfile
         .education(0)
         .college.select.press("Enter");
@@ -190,8 +192,8 @@ describe("Become a Tutor Incomplete form:", () => {
       await r.struct.tutorApp.tutorProfile
         .education(0)
         .major.select.type("Business");
-      await r.page.waitForTimeout(200);
-      await r.struct.tutorApp.tutorProfile
+        await r.page.waitForTimeout(500);
+        await r.struct.tutorApp.tutorProfile
         .education(0)
         .major.select.press("ArrowDown");
       await r.struct.tutorApp.tutorProfile
@@ -204,9 +206,9 @@ describe("Become a Tutor Incomplete form:", () => {
         .degree.select.waitForVisible();
       await r.struct.tutorApp.tutorProfile
         .education(0)
-        .degree.select.fill("Bachelor's Degree");
-      await r.page.waitForTimeout(200);
-      await r.struct.tutorApp.tutorProfile
+        .degree.select.type("Bachelor's Degree");
+        await r.page.waitForTimeout(500);
+        await r.struct.tutorApp.tutorProfile
         .education(0)
         .degree.select.press("ArrowDown");
       await r.struct.tutorApp.tutorProfile
@@ -214,10 +216,8 @@ describe("Become a Tutor Incomplete form:", () => {
         .degree.select.press("Enter");
 
       //select start date
-      await r.struct.tutorApp.tutorProfile
-        .education(0)
-        .start.select.fill("2010");
-      await r.page.waitForTimeout(200);
+      await r.struct.tutorApp.tutorProfile.education(0).start.select.fill("2010");
+      await r.page.waitForTimeout(500);
       await r.struct.tutorApp.tutorProfile
         .education(0)
         .start.select.press("ArrowDown");
@@ -230,38 +230,51 @@ describe("Become a Tutor Incomplete form:", () => {
       await r.struct.tutorApp.tutorProfile
         .education(0)
         .end.select.press("ArrowDown");
-      await r.struct.tutorApp.tutorProfile
-        .education(0)
-        .end.select.press("Enter");
+      await r.struct.tutorApp.tutorProfile.education(0).end.select.press("Enter");
 
       //save and go to the next page
-      await r.struct.tutorApp.tutorProfile.save.click();
+      await r.page.locator('//button[contains(text(),"Next")]').click();
+
+      // wait
       await r.page.waitForTimeout(500);
 
-      // //select category
+      //select category
       await r.struct.tutorApp.subjects.category(6).waitForVisible();
       await r.struct.tutorApp.subjects.category(6).click();
 
-      //select subjects
-      await r.struct.tutorApp.subjects.subject(143).click();
-      await r.struct.tutorApp.subjects.subject(145).click();
-      await r.struct.tutorApp.subjects.subject(146).click();
 
-      //select from drop-down
-      for (const i in [0, 1, 2]) {
-        await r.struct.tutorApp.subjects.topThree(i).select.click();
-        await r.struct.tutorApp.subjects.topThree(i).select.press("ArrowDown");
-        await r.struct.tutorApp.subjects.topThree(i).select.press("Enter");
-      }
+      await r.page.locator('label').filter({ hasText: 'Geometry' }).locator('svg').click();
+      await r.page.locator('label').filter({ hasText: 'Linear Programming' }).locator('svg').click();
+      await r.page.locator('label').filter({ hasText: 'Partial Differential Equations' }).locator('svg').click();
+      await r.page.locator('label').filter({ hasText: 'Set Theory' }).locator('svg').click();
+      
+      await r.page.keyboard.press('PageDown'); 
 
-      //save and go to the next page
+
+      const drop_downs = r.page.locator('//div[@role="combobox"]');
+
+      drop_downs.nth(0).click();
+      await r.page.getByRole('option', { name: 'Geometry' }).click();
+      drop_downs.nth(0).press('ArrowDown');
+      drop_downs.nth(0).press('Enter');
+
+      drop_downs.nth(1).click();
+      await r.page.getByRole('option', { name: 'Linear Programming' }).click();
+      drop_downs.nth(1).press('ArrowDown');
+      drop_downs.nth(1).press('Enter');
+
+      drop_downs.nth(2).click();
+      await r.page.getByRole('option', { name: 'Set Theory' }).click();
+      drop_downs.nth(2).press('ArrowDown');
+      drop_downs.nth(2).press('Enter');
+
+      await r.page.waitForTimeout(1000);
+
       await r.struct.tutorApp.subjects.save.click();
 
       //answer questions
       await r.struct.tutorApp.interview.question(1).waitForVisible();
-      await r.struct.tutorApp.interview
-        .question(1)
-        .fill(faker.lorem.sentence(5));
+      await r.struct.tutorApp.interview.question(1).fill(faker.lorem.sentence(5));
       await r.struct.tutorApp.interview.question(1).press("Enter");
       await r.struct.tutorApp.interview.answer(1).waitForVisible();
       await r.struct.tutorApp.interview.answer(1).fill(faker.lorem.sentence(5));
@@ -271,9 +284,7 @@ describe("Become a Tutor Incomplete form:", () => {
       await r.struct.tutorApp.interview.next.click();
 
       await r.struct.tutorApp.interview.question(2).waitForVisible();
-      await r.struct.tutorApp.interview
-        .question(2)
-        .fill(faker.lorem.sentence(5));
+      await r.struct.tutorApp.interview.question(2).fill(faker.lorem.sentence(5));
       await r.struct.tutorApp.interview.question(2).press("Enter");
       await r.struct.tutorApp.interview.answer(2).waitForVisible();
       await r.struct.tutorApp.interview.answer(2).fill(faker.lorem.sentence(5));
@@ -283,9 +294,7 @@ describe("Become a Tutor Incomplete form:", () => {
       await r.struct.tutorApp.interview.next.click();
 
       await r.struct.tutorApp.interview.question(3).waitForVisible();
-      await r.struct.tutorApp.interview
-        .question(3)
-        .fill(faker.lorem.sentence(5));
+      await r.struct.tutorApp.interview.question(3).fill(faker.lorem.sentence(5));
       await r.struct.tutorApp.interview.question(3).press("Enter");
       await r.struct.tutorApp.interview.answer(3).waitForVisible();
       await r.struct.tutorApp.interview.answer(3).fill(faker.lorem.sentence(5));
@@ -298,7 +307,7 @@ describe("Become a Tutor Incomplete form:", () => {
       await r.struct.modals.tutorAppSubmitted.content.okay.waitForVisible();
       await r.struct.modals.tutorAppSubmitted.content.okay.click();
 
-      //student signs out
+      //tutor signs out
       await r.struct.header.userTools.username.click();
       await r.struct.userMenu.signOut.click();
     }

@@ -44,7 +44,7 @@ describe("Become a Tutor:", () => {
       await struct.authPages.applyToTutor.password.waitForVisible();
       await struct.authPages.applyToTutor.password.fill(password);
 
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(1000);
 
       await struct.authPages.applyToTutor.recaptcha.waitForVisible();
       await fillRecaptcha(struct.authPages.applyToTutor.recaptcha);
@@ -59,14 +59,14 @@ describe("Become a Tutor:", () => {
       ]);
       await page.waitForTimeout(1000);
 
+
       //select where are you in life
       await struct.tutorApp.profile.life.select.click();
-      await struct.tutorApp.profile.life.select.press("ArrowDown");
-      await struct.tutorApp.profile.life.select.press("Enter");
+      await page.getByTestId('tutorApp.profile.life.option(career).option').click();
 
       //phone number
       await struct.tutorApp.profile.phone.waitForVisible();
-      await struct.tutorApp.profile.phone.type("650123456789012");
+      await struct.tutorApp.profile.phone.fill("650123456789012");
 
       await struct.tutorApp.profile.submit.click();
 
@@ -91,10 +91,10 @@ describe("Become a Tutor:", () => {
         malesExamples[faker.datatype.number(4)]
       );
       await page.waitForTimeout(500);
-      await (
-        await page.waitForSelector('//div[contains(text(),"Crop and Save")]')
-      ).click();
+      await struct.modals.changeAvatar.content.crop.click();
       await page.waitForTimeout(500);
+
+    
 
       // check if first and last name are correct
       expect(await struct.tutorApp.profile.firstName.value()).toBe(
@@ -124,14 +124,13 @@ describe("Become a Tutor:", () => {
       );
 
       //select gender
-      await struct.tutorApp.tutorProfile.gender.select.waitForVisible();
-      await struct.tutorApp.tutorProfile.gender.select.fill(input);
-      await struct.tutorApp.tutorProfile.gender.select.press("ArrowDown");
-      await struct.tutorApp.tutorProfile.gender.select.press("Enter");
+      await struct.tutorApp.tutorProfile.gender.select.click();
+      await struct.tutorApp.tutorProfile.gender.option(1).option.click();
+
 
       //type about
       await struct.tutorApp.tutorProfile.about.waitForVisible();
-      await struct.tutorApp.tutorProfile.about.type(
+      await struct.tutorApp.tutorProfile.about.fill(
         "Apply from " + product + " " + faker.lorem.sentence(3)
       );
 
@@ -140,7 +139,12 @@ describe("Become a Tutor:", () => {
       await struct.tutorApp.tutorProfile.teaching.fill(faker.lorem.sentence(3));
 
       //remove work experience
-      await struct.tutorApp.tutorProfile.work(0).remove.click();
+      await page.locator('//button[contains(text(),"Remove")]').click();
+      
+
+      // pagedown 
+      await page.keyboard.down('End'); 
+
 
       //select college
       await struct.tutorApp.tutorProfile
@@ -208,29 +212,43 @@ describe("Become a Tutor:", () => {
       await struct.tutorApp.tutorProfile.education(0).end.select.press("Enter");
 
       //save and go to the next page
-      await struct.tutorApp.tutorProfile.save.waitForVisible();
-      await struct.tutorApp.tutorProfile.save.click();
+      await page.locator('//button[contains(text(),"Next")]').click();
 
       // wait
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(1000);
 
       //select category
       await struct.tutorApp.subjects.category(6).waitForVisible();
       await struct.tutorApp.subjects.category(6).click();
 
-      //select subjects
-      await struct.tutorApp.subjects.subject(143).click();
-      await struct.tutorApp.subjects.subject(145).click();
-      await struct.tutorApp.subjects.subject(146).click();
 
-      //select from drop-down
-      for (const i in [0, 1, 2]) {
-        await struct.tutorApp.subjects.topThree(i).select.click();
-        await struct.tutorApp.subjects.topThree(i).select.press("ArrowDown");
-        await struct.tutorApp.subjects.topThree(i).select.press("Enter");
-      }
+      await page.locator('label').filter({ hasText: 'Geometry' }).locator('svg').click();
+      await page.locator('label').filter({ hasText: 'Linear Programming' }).locator('svg').click();
+      await page.locator('label').filter({ hasText: 'Partial Differential Equations' }).locator('svg').click();
+      await page.locator('label').filter({ hasText: 'Set Theory' }).locator('svg').click();
+      
+      await page.keyboard.press('PageDown'); 
 
-      //save and go to the next page
+
+      const drop_downs = page.locator('//div[@role="combobox"]');
+
+      drop_downs.nth(0).click();
+      await page.getByRole('option', { name: 'Geometry' }).click();
+      drop_downs.nth(0).press('ArrowDown');
+      drop_downs.nth(0).press('Enter');
+
+      drop_downs.nth(1).click();
+      await page.getByRole('option', { name: 'Linear Programming' }).click();
+      drop_downs.nth(1).press('ArrowDown');
+      drop_downs.nth(1).press('Enter');
+
+      drop_downs.nth(2).click();
+      await page.getByRole('option', { name: 'Set Theory' }).click();
+      drop_downs.nth(2).press('ArrowDown');
+      drop_downs.nth(2).press('Enter');
+
+      await page.waitForTimeout(1000);
+
       await struct.tutorApp.subjects.save.click();
 
       //answer questions
@@ -317,7 +335,7 @@ describe("Become a Tutor:", () => {
       await Promise.all([
         page.waitForNavigation({
           waitUntil: "domcontentloaded",
-          timeout: 10_000,
+          timeout: 30_000,
         }),
         struct.authPages.applyToTutor.createAccount.click(),
       ]);
@@ -325,12 +343,11 @@ describe("Become a Tutor:", () => {
 
       //select where are you in life
       await struct.tutorApp.profile.life.select.click();
-      await struct.tutorApp.profile.life.select.press("ArrowDown");
-      await struct.tutorApp.profile.life.select.press("Enter");
+      await page.getByTestId('tutorApp.profile.life.option(career).option').click();
 
       //phone number
       await struct.tutorApp.profile.phone.waitForVisible();
-      await struct.tutorApp.profile.phone.type("650123456789012");
+      await struct.tutorApp.profile.phone.fill("650123456789012");
 
       await struct.tutorApp.profile.submit.click();
 
@@ -355,13 +372,13 @@ describe("Become a Tutor:", () => {
 
       await struct.tutorApp.profile.avatar.changeButton.click();
       await struct.tutorApp.profile.avatar.input.selectFiles(
-        femalesExamples[faker.datatype.number(7)]
+        femalesExamples[faker.datatype.number(6)]
       );
       await page.waitForTimeout(500);
-      await (
-        await page.waitForSelector('//div[contains(text(),"Crop and Save")]')
-      ).click();
+      await struct.modals.changeAvatar.content.crop.click();
       await page.waitForTimeout(500);
+
+    
 
       // check if first and last name are correct
       expect(await struct.tutorApp.profile.firstName.value()).toBe(
@@ -391,14 +408,18 @@ describe("Become a Tutor:", () => {
       );
 
       //select gender
-      await struct.tutorApp.tutorProfile.gender.select.waitForVisible();
-      await struct.tutorApp.tutorProfile.gender.select.fill("Female");
-      await struct.tutorApp.tutorProfile.gender.select.press("ArrowDown");
-      await struct.tutorApp.tutorProfile.gender.select.press("Enter");
+      await struct.tutorApp.tutorProfile.gender.select.click();
+      await struct.tutorApp.tutorProfile.gender.option(2).option.click();
+      // await struct.tutorApp.tutorProfile.gender.option(2).option.click();
+
+      // await page.getByTestId('tutorApp.tutorProfile.gender.option(1).option').click();
+
+      // await struct.tutorApp.tutorProfile.gender.select.press("ArrowDown");
+      // await struct.tutorApp.tutorProfile.gender.select.press("Enter");
 
       //type about
       await struct.tutorApp.tutorProfile.about.waitForVisible();
-      await struct.tutorApp.tutorProfile.about.type(
+      await struct.tutorApp.tutorProfile.about.fill(
         "Apply from " + product + " " + faker.lorem.sentence(3)
       );
 
@@ -407,7 +428,12 @@ describe("Become a Tutor:", () => {
       await struct.tutorApp.tutorProfile.teaching.fill(faker.lorem.sentence(3));
 
       //remove work experience
-      await struct.tutorApp.tutorProfile.work(0).remove.click();
+      await page.locator('//button[contains(text(),"Remove")]').click();
+      
+
+      // pagedown 
+      await page.keyboard.down('End'); 
+
 
       //select college
       await struct.tutorApp.tutorProfile
@@ -475,8 +501,9 @@ describe("Become a Tutor:", () => {
       await struct.tutorApp.tutorProfile.education(0).end.select.press("Enter");
 
       //save and go to the next page
-      await struct.tutorApp.tutorProfile.save.waitForVisible();
-      await struct.tutorApp.tutorProfile.save.click();
+      await page.locator('//button[contains(text(),"Next")]').click();
+      // await struct.tutorApp.tutorProfile.save.waitForVisible();
+      // await struct.tutorApp.tutorProfile.save.click();
 
       // wait
       await page.waitForTimeout(1000);
@@ -485,19 +512,34 @@ describe("Become a Tutor:", () => {
       await struct.tutorApp.subjects.category(6).waitForVisible();
       await struct.tutorApp.subjects.category(6).click();
 
-      //select subjects
-      await struct.tutorApp.subjects.subject(143).click();
-      await struct.tutorApp.subjects.subject(145).click();
-      await struct.tutorApp.subjects.subject(146).click();
 
-      //select from drop-down
-      for (const i in [0, 1, 2]) {
-        await struct.tutorApp.subjects.topThree(i).select.click();
-        await struct.tutorApp.subjects.topThree(i).select.press("ArrowDown");
-        await struct.tutorApp.subjects.topThree(i).select.press("Enter");
-      }
+      await page.locator('label').filter({ hasText: 'Geometry' }).locator('svg').click();
+      await page.locator('label').filter({ hasText: 'Linear Programming' }).locator('svg').click();
+      await page.locator('label').filter({ hasText: 'Partial Differential Equations' }).locator('svg').click();
+      await page.locator('label').filter({ hasText: 'Set Theory' }).locator('svg').click();
+      
+      await page.keyboard.press('PageDown'); 
 
-      //save and go to the next page
+
+      const drop_downs = await page.locator('//div[@role="combobox"]');
+
+      drop_downs.nth(0).click();
+      await page.getByRole('option', { name: 'Geometry' }).click();
+      drop_downs.nth(0).press('ArrowDown');
+      drop_downs.nth(0).press('Enter');
+
+      drop_downs.nth(1).click();
+      await page.getByRole('option', { name: 'Linear Programming' }).click();
+      drop_downs.nth(1).press('ArrowDown');
+      drop_downs.nth(1).press('Enter');
+
+      drop_downs.nth(2).click();
+      await page.getByRole('option', { name: 'Set Theory' }).click();
+      drop_downs.nth(2).press('ArrowDown');
+      drop_downs.nth(2).press('Enter');
+
+      await page.waitForTimeout(3000);
+
       await struct.tutorApp.subjects.save.click();
 
       //answer questions
@@ -541,3 +583,5 @@ describe("Become a Tutor:", () => {
     }
   );
 });
+
+

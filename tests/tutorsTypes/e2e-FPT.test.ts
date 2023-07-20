@@ -360,10 +360,12 @@ describe("E2E FPT: ", () => {
     // sign in
 
     await struct.authPages.signIn.email.waitForVisible();
-    await struct.authPages.signIn.email.type(email.toLowerCase());
+    // await struct.authPages.signIn.email.type(email.toLowerCase());
+    await struct.authPages.signIn.email.type('williamkerluketutor.fpt@local.tutorme.com');
 
     await struct.authPages.signIn.password.waitForVisible();
-    await struct.authPages.signIn.password.fill(password);
+    // await struct.authPages.signIn.password.fill(password);
+    await struct.authPages.signIn.password.fill('Fpt12345!');
 
     await page.waitForTimeout(1000);
     await fillRecaptcha(struct.authPages.signIn.recaptcha);
