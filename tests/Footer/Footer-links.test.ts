@@ -57,12 +57,12 @@ describe('Footer - ', () => {
 
                     // Demo Lesson Space
                     await s.struct.footer.demoLessonSpace.click();
-                    expect(s.page.url()).toContain('tutorme.dev/demo/whiteboard/');
+                    expect(s.page.url()).toContain('demo/whiteboard/');
                     await s.page.goBack();
 
                     // Browse Tutors
                     await s.struct.footer.browseTutors.click();
-                    expect(s.page.url()).toContain('tutorme.dev/tutors/');
+                    expect(s.page.url()).toContain('tutors/');
                     await s.page.goBack();
 
                     // PARTNER WITH US

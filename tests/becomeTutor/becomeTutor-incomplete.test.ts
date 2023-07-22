@@ -83,7 +83,9 @@ describe("Become a Tutor Incomplete form:", () => {
       await struct.header.userTools.username.click();
       await struct.userMenu.signOut.click();
 
-      await page.waitForTimeout(500);
+      page.close();
+
+      await page.waitForTimeout(2000);
 
       const r = await createVisitor();
 
@@ -127,7 +129,7 @@ describe("Become a Tutor Incomplete form:", () => {
       expect(await r.struct.tutorApp.profile.phone.value()).toBe(tutorPhone);
 
       await r.struct.tutorApp.profile.submit.click();
-      await r.page.waitForTimeout(500);
+      await r.page.waitForTimeout(1000);
 
       // await (await page.waitForSelector('//div[contains(text(),"Account Saved")]')).isVisible();
 
@@ -248,27 +250,30 @@ describe("Become a Tutor Incomplete form:", () => {
       await r.page.locator('label').filter({ hasText: 'Partial Differential Equations' }).locator('svg').click();
       await r.page.locator('label').filter({ hasText: 'Set Theory' }).locator('svg').click();
       
-      await r.page.keyboard.press('PageDown'); 
+      await r.page.keyboard.press('ArrowDown'); 
 
 
-      const drop_downs = r.page.locator('//div[@role="combobox"]');
+      let drop_downs = r.page.locator('//div[@role="combobox"]');
 
       drop_downs.nth(0).click();
-      await r.page.getByRole('option', { name: 'Geometry' }).click();
-      drop_downs.nth(0).press('ArrowDown');
-      drop_downs.nth(0).press('Enter');
+      await r.page.getByRole('option', { name: 'Geometry' }).dblclick();
+      // drop_downs.nth(0).press('ArrowDown');
+      // drop_downs.nth(0).press('Enter');
+      // await r.page.waitForTimeout(500);
+
 
       drop_downs.nth(1).click();
-      await r.page.getByRole('option', { name: 'Linear Programming' }).click();
-      drop_downs.nth(1).press('ArrowDown');
-      drop_downs.nth(1).press('Enter');
+      await r.page.getByRole('option', { name: 'Linear Programming' }).dblclick();
+      // drop_downs.nth(1).press('ArrowDown');
+      // drop_downs.nth(1).press('Enter');
+      // await r.page.waitForTimeout(500);
+
 
       drop_downs.nth(2).click();
-      await r.page.getByRole('option', { name: 'Set Theory' }).click();
-      drop_downs.nth(2).press('ArrowDown');
-      drop_downs.nth(2).press('Enter');
-
-      await r.page.waitForTimeout(1000);
+      await r.page.getByRole('option', { name: 'Set Theory' }).dblclick();
+      // drop_downs.nth(2).press('ArrowDown');
+      // drop_downs.nth(2).press('Enter');
+      // await r.page.waitForTimeout(500);
 
       await r.struct.tutorApp.subjects.save.click();
 

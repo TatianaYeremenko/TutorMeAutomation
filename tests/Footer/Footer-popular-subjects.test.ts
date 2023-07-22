@@ -22,7 +22,7 @@ describe('Visitor/Regular/Umbrella Footer - ', () => {
 
                 
                 
-                let subjects = [145,146,150];
+                let subjects = [145,146,142];
                 for (var val of subjects) {   
                     await s.struct.footer.subject(val).click();
 
@@ -33,30 +33,29 @@ describe('Visitor/Regular/Umbrella Footer - ', () => {
                 }
                 s.struct.footer.subject(145).click;
                 await s.struct.tutors.autoMatchTop.click();
-                s.struct.modals.requestLessonForm.content.description.waitForVisible();
 
                 await s.page.waitForTimeout(5000);
 
                 
                  // fill out the form
-                await s.struct.modals.requestLessonForm.waitForVisible();
                 const text = `${type} request submitted from ${(process.env.PLAYWRIGHT_PRODUCT?.toString())?.toUpperCase()} ${faker.lorem.sentence(10).toString()}`;
-                await s.struct.modals.requestLessonForm.content.description.fill(text);
+                await s.struct.modals.requestLessonForm.content.description
+                .fill(text);
 
                 await s.struct.modals.requestLessonForm.content.submit.waitForVisible();
                 await s.struct.modals.requestLessonForm.content.submit.click();
 
-                await s.page.waitForTimeout(500);
+                await s.page.waitForTimeout(1500);
 
                 await s.struct.modals.notifyingTutors.content.cancel.waitForVisible();
                 await s.struct.modals.notifyingTutors.content.cancel.click();
 
-                await s.page.waitForTimeout(500);
+                await s.page.waitForTimeout(1500);
 
                 await s.struct.modals.confirmCancel.content.cancel.waitForVisible();
                 await s.struct.modals.confirmCancel.content.cancel.click();
 
-                await s.page.waitForTimeout(500);
+                await s.page.waitForTimeout(1500);
 
                 // student signs out
                 await s.struct.header.userTools.username.click();

@@ -6,7 +6,7 @@ it("part tutor should not able to see earnings section", async () => {
     const {
         struct,
         page
-    } = await createVisitor();
+    } = await createVisitor();       
 
     // sign in
     await struct.authPages.signIn.email.waitForVisible();
@@ -23,6 +23,7 @@ it("part tutor should not able to see earnings section", async () => {
     await struct.authPages.signIn.signIn.waitForVisible();
     await struct.authPages.signIn.signIn.click();
     await page.waitForTimeout(500);
+
 
     await page.setViewportSize({
         width: 1024,
