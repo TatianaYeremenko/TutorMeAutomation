@@ -1,4 +1,4 @@
-DOMAIN=develop.testing.tutorme.dev
+DOMAIN=stg-tutor.peardeck.com
 DEBUG=false
 PLAYWRIGHT_PRODUCT=chrome
 DELAY=1000
