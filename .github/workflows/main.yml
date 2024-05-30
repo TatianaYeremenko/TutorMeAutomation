@@ -1,11 +1,12 @@
-name: Playwright Tests
+name : Playwright Tests
 on:
   push:
     branches: [main, master]
   pull_request:  
-    branches: [main, master]
-jobs: 
-  build:
+    branches: [main, master] 
+jobs:
+  tests_1:
+    timeout-minutes: 600
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,36 +20,7 @@ jobs:
       - name: Install NPM
         run:  npm install
               npm audit fix
-  test_1: 
-    needs: build
-    runs-on: ubuntu-latest
-    steps: 
-      - name: checkout repo
-        uses: actions/checkout@v3
-      - name: use node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-      - name: Install NPM
-        run:  npm install
-              npm audit fix     
-      - name: Run Footer Tests     
-      - run: npm test -- Footer-links.test.ts       
-  test_2: 
-    needs: build
-    runs-on: ubuntu-latest
-    steps: 
-      - name: checkout repo
-        uses: actions/checkout@v3
-      - name: use node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-      - name: Install NPM
-        run:  npm install
-              npm audit fix     
-      - name: Run Footer Tests     
-      - run: npm test -- Footer-links.test.ts  
- 
-
-
+      - name: select env
+        run:  export DOMAIN=stg-tutor.peardeck.com
+      - name: Run test
+        run:  npm test -- Footer-links.test.ts
