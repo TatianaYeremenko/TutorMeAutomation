@@ -22,7 +22,7 @@ jobs:
       - name: select env
         run:  export DOMAIN=stg-tutor.peardeck.com
       - name: Run test
-        run:  npm test -- userAccount --runInBand --logHeapUsage 
+        run:  npm test -- addTutor
 
 
 
