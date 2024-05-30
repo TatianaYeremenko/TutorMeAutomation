@@ -13,15 +13,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: |
+          npm install
+      - env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          token: ${{ secrets.NPM_TOKEN }}
-      - name: Install NPM
-        run:  npm i
       - name: select env
         run:  export DOMAIN=stg-tutor.peardeck.com
       - name: Run test
