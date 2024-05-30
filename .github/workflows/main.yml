@@ -13,10 +13,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: |
-          npm install
-      - env:
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          token: ${{ secrets.NPM_TOKEN }}
+      - name: Install NPM
+        run:  npm install
       - name: select env
         run:  export DOMAIN=stg-tutor.peardeck.com
       - name: Run test
