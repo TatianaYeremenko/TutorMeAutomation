@@ -15,6 +15,11 @@ jobs:
           node-version: 18
       - name: Register npmjs
         run:  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - name: Install NPM
+        run:  npm i
+      - name: select env
+        run:  export DOMAIN=stg-tutor.peardeck.com
       - name: Run test
-        run:  npm test -- e2e-WritingLabCheck.test.ts
+        run:  npm test -- userAccount --runInBand --logHeapUsage 
+
 
