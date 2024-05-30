@@ -29,6 +29,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+      - name: Install NPM
+        run:  npm install
+              npm audit fix     
       - name: Run Footer Tests     
       - run: npm test -- Footer-links.test.ts       
   test_2: 
@@ -41,8 +44,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - name: Run Footer Tests
-        run:  npm test -- Footer-links.test.ts
+      - name: Install NPM
+        run:  npm install
+              npm audit fix     
+      - name: Run Footer Tests     
+      - run: npm test -- Footer-links.test.ts  
  
 
 
