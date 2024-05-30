@@ -1,8 +1,7 @@
 import faker, { random } from "faker";
-import { any } from "zod";
 
 describe("live lesson - ", () => {
-  it("student/tutor Lesson Tools: All header feautures are displayed correctly", async () => {
+  it("student/tutor Lesson Tools: Calculator is available and working for both", async () => {
     //create tutor
     const t = await createQaUser("tutor");
 
@@ -40,6 +39,7 @@ describe("live lesson - ", () => {
     await t.page.waitForTimeout(2000);
     await t.page.reload();
 
+    
     //create student
     const s = await createQaUser("studentWithUmbrella");
     const studentId = "" + s.user.id.toString() + "";
@@ -90,49 +90,149 @@ describe("live lesson - ", () => {
     await t.page.waitForTimeout(1000);
     await s.page.waitForTimeout(1000);
 
-    //student side
-    // timer is avalable
-    await s.struct.lessonSpace.header.timerToggle.waitForVisible();
-
-    // end button
-    await s.struct.lessonSpace.header.end.waitForVisible();
-    await s.struct.lessonSpace.header.end.click();
-    await s.struct.modals.endLesson.content.cancel.waitForVisible();
-    await s.struct.modals.endLesson.content.cancel.click();
-
-    //help
-    await s.struct.lessonSpace.header.help.waitForVisible();
-
-    //tutor side
-
     //tutor confirm that a new student
-    await t.struct.modals.firstTime.content.gotIt.waitForVisible();
-    await t.struct.modals.firstTime.content.gotIt.click();
+    t.struct.modals.firstTime.content.gotIt.waitForVisible();
+    t.struct.modals.firstTime.content.gotIt.click();
 
-    // timer is avalable
-    await t.struct.lessonSpace.header.timerToggle.waitForVisible();
+    // CHECK CALCULATER
+    await s.struct.lessonSpace.calculatorButton.click();
 
-    // end button
-    await t.struct.lessonSpace.header.end.waitForVisible();
-    await t.struct.lessonSpace.header.end.click();
-    await t.struct.modals.endLesson.content.cancel.waitForVisible();
-    await t.struct.modals.endLesson.content.cancel.click();
+    // Enter 789 + 456 =
+    const calculation = [
+      "7",
+      "8",
+      "9",
+      "Plus",
+      "4",
+      "5",
+      "6",
+      "Enter",
+    ] as const;
 
-    // pause button
-    await t.struct.lessonSpace.header.pause.waitForVisible();
-    await t.struct.lessonSpace.header.pause.click();
-    await t.struct.modals.pauseLesson.content.resume.waitForVisible();
-    await t.struct.modals.pauseLesson.content.resume.click();
+    for (const item of calculation) {
+      await s.page.click("[aria-label='" + item + "']");
+    }
+    // Click if tutor sees the result
+    await t.struct.lessonSpace.calculatorButton.click();
+    await t.page
+      .locator('[aria-label="Expression 1: 789 plus 456 equals 1245"]')
+      .isVisible();
 
-    // void button
-    await t.struct.lessonSpace.header.void.waitForVisible();
-    await t.struct.lessonSpace.header.void.click();
-    await t.struct.modals.voidLesson.content.returnToLesson.waitForVisible();
-    await t.struct.modals.voidLesson.content.returnToLesson.click();
+    // Check again
+    const tutorEquation = [
+      "1",
+      "1",
+      "0",
+      "Plus",
+      "1",
+      "2",
+      "0",
+      "Enter",
+    ] as const;
 
-    //help
-    await t.struct.lessonSpace.header.help.waitForVisible();
-    await t.struct.lessonSpace.header.help.click();
+    for (const item of tutorEquation) {
+      await t.page.click("[aria-label='" + item + "']");
+    }
+
+    // Click if user sees the result
+    await s.page
+      .locator('[aria-label="Expression 2: 110 plus 120 equals 230"]')
+      .isVisible();
+
+    await s.page.click("text=clear all");
+    await s.page.click('span:has-text("​")');
+
+    // CHECK CODE EDITOR
+
+    //click on Code
+    await s.struct.lessonSpace.codeEditorButton.click();
+
+    // student check Code Editor
+    await s.struct.lessonSpace.codeEditor.toolbar.addFile.click();
+
+    //check the board
+    await s.struct.lessonSpace.codeEditor.toolbar.newFileName.type("1");
+    await s.struct.lessonSpace.codeEditor.toolbar.addNewFile.click();
+
+    //error message
+    expect(
+      await s.struct.lessonSpace.codeEditor.toolbar.newFileNameError.text()
+    ).toBe("File name must have an extension");
+
+    // click add
+    await s.struct.lessonSpace.codeEditor.toolbar.newFileName.type(".py");
+    await s.struct.lessonSpace.codeEditor.toolbar.addNewFile.click();
+
+    // click collapse
+    await s.struct.lessonSpace.codeEditor.toolbar.collapse.click();
+
+    // click expand
+    await s.struct.lessonSpace.codeEditor.toolbar.expand.click();
+
+    // export
+    await s.struct.lessonSpace.codeEditor.toolbar.exportFiles.waitForVisible();
+
+    //click on Code in tutor
+    await t.struct.lessonSpace.codeEditorButton.click();
+
+    // click on Code Editor
+    await t.struct.lessonSpace.codeEditor.toolbar.addFile.click();
+
+    //check the board
+    await t.struct.lessonSpace.codeEditor.toolbar.newFileName.type("2");
+    await t.struct.lessonSpace.codeEditor.toolbar.addNewFile.click();
+
+    //error message
+    expect(
+      await t.struct.lessonSpace.codeEditor.toolbar.newFileNameError.text()
+    ).toBe("File name must have an extension");
+
+    // click add
+    await t.struct.lessonSpace.codeEditor.toolbar.newFileName.type(".py");
+    await t.struct.lessonSpace.codeEditor.toolbar.addNewFile.click();
+    // click collapse
+    await t.struct.lessonSpace.codeEditor.toolbar.collapse.click();
+    // click expand
+    await t.struct.lessonSpace.codeEditor.toolbar.expand.click();
+    // export
+    await t.struct.lessonSpace.codeEditor.toolbar.exportFiles.waitForVisible();
+
+    //CHECK GOOGLE DOC
+
+    // student click on Google Doc
+    await s.struct.lessonSpace.google.click();
+
+    // open Google Doc
+    const [pageDoc] = await Promise.all([
+      s.page.waitForEvent("popup"),
+      s.struct.lessonSpace.googleDocs.docs.launch.click(),
+    ]);
+    // Check url
+    expect(pageDoc.url()).toContain("docs.google.com/document");
+
+    // open Google Spread Sheet
+    const [pageSheet] = await Promise.all([
+      s.page.waitForEvent("popup"),
+      s.struct.lessonSpace.googleDocs.sheets.launch.click(),
+    ]);
+    // Check url
+    expect(pageSheet.url()).toContain("docs.google.com/spreadsheets");
+
+    // open Google Presentation
+    const [pagePres] = await Promise.all([
+      s.page.waitForEvent("popup"),
+      s.struct.lessonSpace.googleDocs.slides.launch.click(),
+    ]);
+    // Check url
+    expect(pagePres.url()).toContain("docs.google.com/presentation");
+
+    // console.log(pageDoc.url());
+    // console.log(pageSheet.url());
+    // console.log(pagePres.url());
+
+    pageDoc.close();
+    pageSheet.close();
+    pagePres.close();
 
     //end the lesson
     await t.struct.lessonSpace.header.end.waitForHidden();

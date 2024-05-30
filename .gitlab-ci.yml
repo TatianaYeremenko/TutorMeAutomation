@@ -8,8 +8,8 @@ default:
   before_script:
   - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
   - npm install
-  - export DOMAIN=develop.testing.tutorme.dev
-# export DOMAIN=app.testing.tutorme.com
+  - export DOMAIN=stg-tutor.peardeck.com
+  # - export DOMAIN=develop.testing.tutorme.dev
 
 
 test_UserAccount:
@@ -21,14 +21,6 @@ test_UserAccount:
     - echo "User Account tests have finished"
   retry: 0 
 
-test_TutorsSignUp:
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- TutorsSignUp --runInBand --logHeapUsage 
-    - echo "Tutors SignUp tests have finished"
-  retry: 0 
 
 test_SignIn:
   stage: test
@@ -45,30 +37,90 @@ test_Footer:
     - ci
   allow_failure: false  
   script:
-    - npm test -- Footer --runInBand --logHeapUsage 
+    - npm test -- footer --runInBand --logHeapUsage 
     - echo "Tutors SignUp tests have finished"
   retry: 0 
 
-test_MatchWithTutor:
+# test_MatchWithTutor:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: true  
+#   script:
+#     - npm test -- matchWithTutor --runInBand --logHeapUsage 
+#     - echo "Match With Tutor tests have finished"
+#   retry: 0 
+  
+test_BecomeTutor:
   stage: test
   tags: 
     - ci
-  allow_failure: true  
+  allow_failure: false  
   script:
-    - npm test -- matchWithTutor --runInBand --logHeapUsage 
-    - echo "Match With Tutor tests have finished"
-  retry: 0 
+    - npm test -- addTutor
+    - echo "Become a Tutor application tests have finished"
+  retry: 1
 
-test_MultipleQueueing:
+test_BecomeBYOT:
   stage: test
   tags: 
     - ci
-  allow_failure: true  
+  allow_failure: false  
   script:
-    - npm test -- multipleQueueing1step-students-requests.test.ts
-    - npm test -- multipleQueueing2step-cleanup-multiple-students-requests.test.ts
-    - echo "Multiple Queueing tests have finished"
-  retry: 0 
+    - npm test -- addBYOT.test.ts
+    - echo "Become BYOT application tests have finished"
+  retry: 1
+
+test_BG_Tutor_Check_Type:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test e2e-BGcheck.test.ts
+    - echo "Tutor Background Check Type test has finished"
+  retry: 0
+
+test_PP_Tutor_Type:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test e2e-PPT.test
+    - echo "Tutor Part Time Type test has finished"
+#   retry: 0 
+
+test_BYOT Tutor Type:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test e2e-BYOT.test.ts
+    - echo "Tutor BYOT Type test has finished"
+  retry: 0
+
+test_VIPkids Tutor Type:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test e2e-VIPkids.test.ts
+    - echo "Tutor VIPkids Type test has finished"
+#   retry: 0 
+
+test_FPT Tutor Type:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test e2e-FPT.test.ts
+    - echo "Tutor FP Type test has finished"
+#   retry: 0 
+
 
 test_StudentAccountCreation:
   stage: test
@@ -89,15 +141,67 @@ test_TutorsDashboard:
     - echo "Tutors Dashboard tests have finished"
   retry: 0  
 
-# test_SearchBrowseTutors:
+test_SearchBrowseTutors:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- searchBrowse --runInBand --logHeapUsage
+    - echo "Search Browse tests have finished"
+  retry: 0 
+
+test_WritingLab:
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- wl-1-submit-paper.test.ts  
+    - npm test -- wl-2-tutors-cancel.test.ts
+    - echo "WL test has finished"
+  retry: 1 
+
+# test_LessonSpace:
 #   stage: test
 #   tags: 
 #     - ci
 #   allow_failure: false  
 #   script:
-#     - npm test -- searchBrowse --runInBand --logHeapUsage
-#     - echo "Search Browse tests have finished"
-#   retry: 0 
+#     - npm test -- lessonSpaceFeatures  --runInBand
+#     - echo "Demo Space test has finished"
+#   retry: 0
+
+test_LessonSpaceDemo:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: false  
+  script:
+    - npm test -- lessonSpaceDemo --runInBand
+    - echo "Lesson Features test has finished"
+  retry: 0 
+
+test_aiMatch:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: true  
+  script:
+    - npm test -- request_with_ai_valid.test.ts
+    - echo "AI Match Feature test has finished"
+  retry: 0 
+
+test_multipleQueueing:
+  stage: test
+  tags: 
+    - ci
+  allow_failure: true  
+  script:
+    - npm test -- multipleQueueing1step-students-requests.test
+    - npm test -- multipleQueueing2step-cleanup-multiple-requests.test
+    - echo "Multiple Queueing students requests"
+  retry: 0 
+
 
 # test_Admin:
 #   stage: test
@@ -119,145 +223,117 @@ test_TutorsDashboard:
 #     - echo "Screenshot recording is displaying correctly"
 #   retry: 0 
 
-test_BecomeTutor:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- BecomeTutor --runInBand
-    - echo "Become a Tutor application tests have finished"
-  retry: 1
+# test_BecomeTutor:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- BecomeTutor --runInBand
+#     - echo "Become a Tutor application tests have finished"
+#   retry: 1
 
-test_ApprovedTutor:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- becomeTutor-application.test.ts
-    - npm test -- approvedTutorApplication.test.ts
-    - echo "Tutor application got approved"
-  retry: 1  
+# test_ApprovedTutor:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- becomeTutor-application.test.ts
+#     - npm test -- approvedTutorApplication.test.ts
+#     - echo "Tutor application got approved"
+#   retry: 1  
 
-test_BYOT:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- e2e-BYOT.test.ts
-    - echo "BYOT tests tests have finished"
-  retry: 0  
+# test_BYOT:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- e2e-BYOT.test.ts
+#     - echo "BYOT tests tests have finished"
+#   retry: 0  
 
-test_FPT:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- e2e-FPT.test
-    - echo "FPT tests tests have finished"
-  retry: 0  
+# test_FPT:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- e2e-FPT.test
+#     - echo "FPT tests tests have finished"
+#   retry: 0  
   
-test_PPT:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- e2e-PPT.test.ts
-    - echo "PPT tests tests have finished"
-  retry: 0  
+# test_PPT:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- e2e-PPT.test.ts
+#     - echo "PPT tests tests have finished"
+#   retry: 0  
 
-test_VIPkids:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- e2e-VIPkids.test
-    - echo "VIPkids tests tests have finished"
-  retry: 0  
+# test_VIPkids:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- e2e-VIPkids.test
+#     - echo "VIPkids tests tests have finished"
+#   retry: 0  
 
-test_WLcheck:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: true  
-  script:
-    - npm test -- e2e-WritingLabCheck.test.ts
-    - echo "WL avalable for a tutor check has finished"
-  retry: 0  
+# test_WLcheck:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: true  
+#   script:
+#     - npm test -- e2e-WritingLabCheck.test.ts
+#     - echo "WL avalable for a tutor check has finished"
+#   retry: 0  
 
-test_BGcheck:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: true  
-  script:
-    - npm test -- e2e-BGcheck.test
-    - echo "Dashboard for Tutor with BG test has finished"
-  retry: 0 
+# test_BGcheck:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: true  
+#   script:
+#     - npm test -- e2e-BGcheck.test
+#     - echo "Dashboard for Tutor with BG test has finished"
+#   retry: 0 
 
-test_NoLiveLessons:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: true  
-  script:
-    - npm test -- e2e-NoLiveLessons.test
-    - echo "Dashboard for Tutor with No LiveLessons test has finished"
-  retry: 0 
+# test_NoLiveLessons:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: true  
+#   script:
+#     - npm test -- e2e-NoLiveLessons.test
+#     - echo "Dashboard for Tutor with No LiveLessons test has finished"
+#   retry: 0 
 
-test_OtherTypes:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- other  --runInBand
-    - echo "Other tutor types tests tests have finished"
-  retry: 0   
+# test_OtherTypes:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- other  --runInBand
+#     - echo "Other tutor types tests tests have finished"
+#   retry: 0   
 
-test_noConcierge:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- e2e-noConcierge.test
-    - echo "NoConcierge tutor type tests tests have finished"
-  retry: 0  
+# test_noConcierge:
+#   stage: test
+#   tags: 
+#     - ci
+#   allow_failure: false  
+#   script:
+#     - npm test -- e2e-noConcierge.test
+#     - echo "NoConcierge tutor type tests tests have finished"
+#   retry: 0  
 
-test_WritingLab:
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- wl --runInBand    
-    - echo "WL test has finished"
-  retry: 1 
-
-test_LessonSpace:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: true  
-  script:
-    - npm test -- lessonSpaceFeatures  --runInBand
-    - echo "Demo Space test has finished"
-  retry: 0
-
-test_LessonSpaceDemo:
-  stage: test
-  tags: 
-    - ci
-  allow_failure: false  
-  script:
-    - npm test -- lessonSpaceDemo --runInBand
-    - echo "Lesson Features test has finished"
-  retry: 0 
 
 # pending_Fixing:
 #   stage: test

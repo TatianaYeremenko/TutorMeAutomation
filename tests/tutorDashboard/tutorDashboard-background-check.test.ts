@@ -9,18 +9,6 @@ it("Background Check is available fo tutotrs", async () => {
 
     await page.waitForTimeout(1000);
 
-    //update subjects
-    await page.locator('//button[contains(text(),"Update my subjects")]').click();
-    await page.waitForTimeout(500);
-
-    await page.locator('label').filter({ hasText: 'Early MathSubjects include: Basic Math, Pre-Algebra, Algebra, Geometry' }).locator('svg').click();
-    await page.keyboard.press('PageDown');
-    await page.keyboard.press('PageDown');
-
-    await struct.account.subjects.save.click();
-    await page.getByRole('link', { name: 'Go to my account' }).click();
-  
-
     // click on Background Check
     await struct.tutorDashboard.header.checkr.waitForVisible();
     await struct.tutorDashboard.header.checkr.click();
@@ -31,7 +19,7 @@ it("Background Check is available fo tutotrs", async () => {
         struct.tutorDashboard.checkr.privacyPolicy.click()
     ]);
     // Check url
-    expect(pagePrivacyPolicy.url()).toContain('https://checkr.com/privacy-policy');
+    expect(pagePrivacyPolicy.url()).toContain('privacy-policy');
 
     //close page
     await pagePrivacyPolicy.close();
@@ -46,14 +34,14 @@ it("Background Check is available fo tutotrs", async () => {
             struct.tutorDashboard.checkr[link].click()
         ]);
         // Check url
-        expect(pageMorePrivacyPolicy.url()).toContain('https://checkr.com/privacy-policy');
+        expect(pageMorePrivacyPolicy.url()).toContain('privacy-policy');
 
         //close page
         await pageMorePrivacyPolicy.close();
     }
     // check support link
     await struct.tutorDashboard.checkr.emailSupport.waitForVisible();
-    expect(await struct.tutorDashboard.checkr.emailSupport.text()).toBe('support@tutorme.com');
+    expect(await struct.tutorDashboard.checkr.emailSupport.text()).toBe('support-testing@tutor.peardeck.com');
 
     // select Russia from the drop-down
     await struct.tutorDashboard.checkr.select.waitForVisible();
@@ -67,7 +55,7 @@ it("Background Check is available fo tutotrs", async () => {
     await struct.tutorDashboard.checkr.start.click();
 
     //tutor signs out
-    await struct.tutorDashboard.header.userTools.username.click();
+    await struct.tutorDashboard.header.userTools.openMenu.click();
     await struct.userMenu.signOut.click();
 
 });

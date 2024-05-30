@@ -1,8 +1,7 @@
 import faker, { random } from "faker";
-import { any } from "zod";
 
 describe("live lesson - ", () => {
-  it("student/tutor Lesson Tools: All header feautures are displayed correctly", async () => {
+  it("Session Plan is available for a tutor", async () => {
     //create tutor
     const t = await createQaUser("tutor");
 
@@ -40,6 +39,7 @@ describe("live lesson - ", () => {
     await t.page.waitForTimeout(2000);
     await t.page.reload();
 
+    
     //create student
     const s = await createQaUser("studentWithUmbrella");
     const studentId = "" + s.user.id.toString() + "";
@@ -90,49 +90,39 @@ describe("live lesson - ", () => {
     await t.page.waitForTimeout(1000);
     await s.page.waitForTimeout(1000);
 
-    //student side
-    // timer is avalable
-    await s.struct.lessonSpace.header.timerToggle.waitForVisible();
-
-    // end button
-    await s.struct.lessonSpace.header.end.waitForVisible();
-    await s.struct.lessonSpace.header.end.click();
-    await s.struct.modals.endLesson.content.cancel.waitForVisible();
-    await s.struct.modals.endLesson.content.cancel.click();
-
-    //help
-    await s.struct.lessonSpace.header.help.waitForVisible();
-
-    //tutor side
-
     //tutor confirm that a new student
-    await t.struct.modals.firstTime.content.gotIt.waitForVisible();
-    await t.struct.modals.firstTime.content.gotIt.click();
+    t.struct.modals.firstTime.content.gotIt.waitForVisible();
+    t.struct.modals.firstTime.content.gotIt.click();
 
-    // timer is avalable
-    await t.struct.lessonSpace.header.timerToggle.waitForVisible();
+    // CHECK session plan
+    // the session plan should not be available
+    await s.struct.lessonSpace.sessionPlanButton.waitForHidden();
 
-    // end button
-    await t.struct.lessonSpace.header.end.waitForVisible();
-    await t.struct.lessonSpace.header.end.click();
-    await t.struct.modals.endLesson.content.cancel.waitForVisible();
-    await t.struct.modals.endLesson.content.cancel.click();
+    // check the session plan
+    await t.struct.lessonSpace.sessionPlan.raiseLink.waitForVisible();
+    
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseRapport').waitForVisible();
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseRapport').click();
 
-    // pause button
-    await t.struct.lessonSpace.header.pause.waitForVisible();
-    await t.struct.lessonSpace.header.pause.click();
-    await t.struct.modals.pauseLesson.content.resume.waitForVisible();
-    await t.struct.modals.pauseLesson.content.resume.click();
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseAssessKnowledge').waitForVisible();
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseAssessKnowledge').click();
 
-    // void button
-    await t.struct.lessonSpace.header.void.waitForVisible();
-    await t.struct.lessonSpace.header.void.click();
-    await t.struct.modals.voidLesson.content.returnToLesson.waitForVisible();
-    await t.struct.modals.voidLesson.content.returnToLesson.click();
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseIndividualize').waitForVisible();
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseIndividualize').click();
 
-    //help
-    await t.struct.lessonSpace.header.help.waitForVisible();
-    await t.struct.lessonSpace.header.help.click();
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseSummarize').waitForVisible();
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseSummarize').click();
+
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseEncouragement').waitForVisible();
+    await t.struct.lessonSpace.sessionPlan.raiseGoals('raiseEncouragement').click();
+
+    await t.struct.lessonSpace.whiteboardButton.waitForVisible();
+    await t.struct.lessonSpace.whiteboardButton.click();
+
+    await t.struct.lessonSpace.sessionDetails.sessionPlanLink.waitForVisible();
+    await t.struct.lessonSpace.sessionDetails.sessionPlanLink.click(); 
+
+    await t.page.locator('//h2[contains(text(),"Session Plan")]').isVisible();
 
     //end the lesson
     await t.struct.lessonSpace.header.end.waitForHidden();
@@ -161,6 +151,5 @@ describe("live lesson - ", () => {
     //tutor signs out
     await t.struct.tutorDashboard.header.userTools.username.click();
     await t.struct.userMenu.signOut.click();
-    
   });
 });

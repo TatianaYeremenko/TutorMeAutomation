@@ -51,7 +51,7 @@ describe('reset password - ', () => {
       // Resent Modal pops-up
       await struct.authPages.resetPassword.successMessage.waitForVisible();
       await struct.authPages.resetPassword.support.waitForVisible();
-      expect(await struct.authPages.resetPassword.support.text()).toBe('support@tutorme.com');
+      expect(await struct.authPages.resetPassword.support.text()).toBe('support-testing@tutor.peardeck.com');
       await page.goBack();
 
       await struct.authPages.signIn.email.waitForVisible();

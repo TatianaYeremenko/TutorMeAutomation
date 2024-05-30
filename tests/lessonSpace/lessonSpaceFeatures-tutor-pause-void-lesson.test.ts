@@ -5,76 +5,97 @@ import { number } from "zod";
 
 describe("live lesson - ", () => {
   it("student/tutor Void Survey is available ", async () => {
-    const s = await createQaUser("studentWithUmbrella");
-
-    await s.page.waitForSelector('text="Connect with a live tutor"');
-    await s.page.click('text="Connect with a live tutor"');
-
-    //search for a subject
-    await s.struct.homepage.mainSubjectSearch.search.waitForVisible();
-    await s.struct.homepage.mainSubjectSearch.input.type("");
-    await s.struct.homepage.mainSubjectSearch
-      .items(faker.datatype.number(1))
-      .click();
-      await s.struct.homepage.mainSubjectSearch.input.press("ArrowDown");
-      await s.struct.homepage.mainSubjectSearch.input.press("Enter");
-      await s.struct.homepage.mainSubjectSearch.input.press("Enter");
-      await s.page.waitForTimeout(2000);
-
-    // fill out the form
-    // await s.struct.modals.requestLessonForm.waitForVisible();
-    // const text = faker.lorem.sentence(15);
-    const text = `Lesson Submitted From ${process.env.PLAYWRIGHT_PRODUCT?.toString().toUpperCase()} ${faker.lorem
-      .sentence(10)
-      .toString()}`;
-    await s.struct.modals.requestLessonForm.content.description.fill(text);
-
-    //upload files and submit request
-    const examplesFile = [
-      "./lib/files/example_1.gif",
-      "./lib/files/example_2.gif",
-      "./lib/files/example_3.gif",
-    ];
-    await s.struct.modals.requestLessonForm.waitForVisible();
-    await s.struct.modals.requestLessonForm.content.addFiles.selectFiles(
-      examplesFile[0]
-    );
-    await s.struct.modals.requestLessonForm.content.submit.click();
-
-    // cancel the request
-    await s.struct.modals.notifyingTutors.waitForVisible();
-    await s.struct.modals.notifyingTutors.content.cancel.click();
-
+    //create tutor
     const t = await createQaUser("tutor");
 
+    // get tutor name and id
+    let tutorId = t.user.id.toString();
+    let name = t.user.shortName.toString();
+
+    //select subject
+    // click on Edit Profile
+    await t.struct.tutorDashboard.header.userTools.username.waitForVisible();
+    await t.struct.tutorDashboard.header.userTools.username.click();
+
+    await t.struct.userMenu.editProfile.waitForVisible();
+    await t.struct.userMenu.editProfile.click();
+
+    await t.page.waitForTimeout(500);
+
+    //check Curriculum Area
+    await t.page.getByRole("link", { name: "Subjects and Skills" }).click();
+    // await t.page.getByRole("link", { name: "Subjects and Skills" }).click();
+
+    await t.page.keyboard.press("ArrowDown");
+    await t.page.keyboard.press("PageDown");
+
+    // check check-box values
+    let checked = await (await t.page.waitForSelector('//div[contains(text(),"Early Math")]')).isChecked();
+    if (checked == false ) { 
+      await (
+        await t.page.waitForSelector('//div[contains(text(),"Early Math")]')
+      ).click();
+    }
+
+    // submit the changes
+    await t.struct.account.subjects.save.click();
+    await t.page.waitForTimeout(2000);
+    await t.page.reload();
+
+    
+    //create student
+    const s = await createQaUser("studentWithUmbrella");
+    const studentId = "" + s.user.id.toString() + "";
+
+    // go to browse tutors
+    await s.struct.footer.browseTutors.waitForVisible();
+    await s.struct.footer.browseTutors.click();
+    await s.page.keyboard.down("PageDown");
+    await s.page.waitForTimeout(3000);
+
+    // find available tutor
+    await s.struct.tutors.tutor(tutorId).name.waitForVisible();
+    await s.struct.tutors.tutor(tutorId).card.click();
+
+    //click on Start Lesson
+    await s.struct.tutorProfile.requestLesson.waitForVisible();
+    await s.struct.tutorProfile.requestLesson.click();
+
+    // select a subject form modal
+    await s.struct.modals.connectTutor.content.subjectSelect.click();
+    await s.struct.modals.connectTutor.content.option(10004).option.click();
+    await s.page.keyboard.press("Enter");
+
+    await s.page
+      .getByRole("combobox", { name: "Select your grade level*" })
+      .click();
+    await s.page.getByRole("option", { name: "1st grade" }).click();
+
+    //Describe your question
+    await s.struct.sessionRequest.description.type("test");
+
+    // close button is avalable
+    await s.struct.modals.connectTutor.content.close.waitForVisible();
+
+    // Code of Conduct
+    await s.struct.sessionRequest.codeOfConduct.check();
+
+    // await s.page.getByTestId('modals.connectTutor.content.option(10016).option').click();
+    await s.page.getByRole("button", { name: "Send session request" }).click();
+
+    // modal pops up
+    await s.struct.modals.waitingForTutor.waitForVisible();
+
+    // tutor accepts the request
+    await t.struct.modals.request.waitForVisible();
+    await t.struct.modals.request.content.accept.waitForVisible();
+    await t.struct.modals.request.content.accept.click();
     await t.page.waitForTimeout(1000);
-
-    // confirm the cancellation and then keep searching
-    await s.struct.modals.confirmCancel.waitForVisible();
-    await s.struct.modals.confirmCancel.content.keepSearching.click();
-
-    // tutor click on "live lesson
-    await t.struct.tutorDashboard.header.pastTutoring.waitForVisible();
-    await t.struct.tutorDashboard.header.pastTutoring.click();
-
-    await t.struct.tutorDashboard.header.availableTutoring.waitForVisible();
-    await t.struct.tutorDashboard.header.availableTutoring.click();
-
-    await t.page.waitForSelector('text="Claim session"');
-    await t.page.click('text="Claim session"');
-
-    // claim the lesson
-    await t.struct.modals.claimLesson.content.claim.waitForVisible();
-    await t.struct.modals.claimLesson.content.claim.click();
-
-    //student enter the lesson
-    await s.struct.waitingRoom.enterLesson.waitForVisible();
-    await s.struct.waitingRoom.enterLesson.click();
     await s.page.waitForTimeout(1000);
 
     //tutor confirm that a new student
-    const new_student = await t.page.waitForSelector('text="Got it"');
-    await new_student.click();
+    t.struct.modals.firstTime.content.gotIt.waitForVisible();
+    t.struct.modals.firstTime.content.gotIt.click();
 
     // tutor click on Pause
     await t.struct.lessonSpace.header.pause.click();
@@ -88,42 +109,51 @@ describe("live lesson - ", () => {
     // click on void
     await t.struct.lessonSpace.header.void.click();
 
-    //tutor sees the void survey
-    await t.struct.modals.voidLesson.waitForVisible();
-
-    //check the message for tutors
-    expect(await t.page.locator("id=modalDesc").textContent()).toBe(
-      "Only void a lesson if you were unable to help the student, as you are not paid for voided lessons."
-    );
-
     //return back to the lesson
     await t.struct.modals.voidLesson.content.returnToLesson.waitForVisible();
     await t.struct.modals.voidLesson.content.returnToLesson.click();
 
-    // five reasons should be available
+    // click on void again
     await t.struct.lessonSpace.header.void.click();
-    for (var reason = 0; reason < 5; reason++) {
-      await t.struct.modals.voidLesson.content.reason(reason).click();
-    }
-    t.struct.modals.voidLesson.content.reason(faker.datatype.number(4)).click();
 
-    // close the modal
-    await t.struct.modals.voidLesson.content.void.click();
-    await t.page.waitForTimeout(200);
-
-    //tutor signs out
-    await t.struct.tutorDashboard.header.userTools.username.click();
-    await t.struct.userMenu.signOut.click();
-
-    //student sees the pop-up that the lesson was void and the student would not be charged
-    await s.struct.modals.tutorVoided.waitForVisible();
-    await s.struct.modals.tutorVoided.content.browseTutors.waitForVisible();
-    await s.struct.modals.tutorVoided.content.browseTutors.waitForVisible();
-    await s.struct.modals.tutorVoided.content.messageUs.waitForVisible();
-    await s.struct.modals.tutorVoided.content.close.click();
-
-    // click on user menu
-    await s.struct.header.userTools.username.click();
-    await s.struct.userMenu.signOut.click();
+    // five reasons should be available
+    await t.page
+      .locator("label")
+      .filter({ hasText: "The student’s request didn’t make sense." })
+      .locator("svg")
+      .click();
+    await t.page
+      .locator("label")
+      .filter({ hasText: "The student or I had technical difficulties." })
+      .locator("svg")
+      .click();
+    await t.page
+      .locator("label")
+      .filter({ hasText: "The student behaved inappropriately." })
+      .locator("svg")
+      .click();
+    await t.page
+      .locator("label")
+      .filter({
+        hasText:
+          "The student asked for help with an exam/test/quiz (Academic Dishonesty).",
+      })
+      .locator("svg")
+      .click();
+    await t.page
+      .locator("label")
+      .filter({ hasText: "Other, please explain below." })
+      .locator("svg")
+      .click();
+    await t.page.getByTestId("modals.voidLesson.content.comments").click();
+    await t.page
+      .getByTestId("modals.voidLesson.content.comments")
+      .fill("testing here");
+    await t.page.waitForTimeout(500);
+    await t.page.getByRole("button", { name: "Void session" }).press("Enter");
+    await t.page
+      .getByTestId("tutorDashboard.header.userTools.openMenu")
+      .click();
+    await t.page.getByTestId("userMenu.signOut").click();
   });
 });

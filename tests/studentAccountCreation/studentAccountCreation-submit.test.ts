@@ -34,7 +34,7 @@ it('student can sign up via Student Account Creation Link', async () => {
 
     //check the error
     console.log(await struct.authPages.joinOrg.emailError.text());
-    expect(await struct.authPages.joinOrg.emailError.text()).toContain('The email address domain name does not match any current TutorMe partners. Please try a different email address or contact your TutorMe administrator.');  
+    expect(await struct.authPages.joinOrg.emailError.text()).toContain('The email address domain name does not match any current Pear Deck Tutor partners. Please try a different email address or contact your Pear Deck Tutor administrator.');  
 
     //check the error
     await struct.authPages.joinOrg.email.waitForVisible();

@@ -6,25 +6,26 @@
   },
   "dependencies": {
     "@jest/reporters": "^27.4.4",
-    "@tutorme/sitestruct": "^0.1.87",
+    "@tutorme/sitestruct": "^0.1.94",
     "@types/colors": "^1.2.1",
     "@types/faker": "^5.5.9",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^27.0.3",
     "@types/lodash": "^4.14.178",
     "colors": "^1.4.0",
     "docx": "^7.3.0",
     "faker": "^5.5.3",
+    "jest": "^27.4.4",
     "lodash": "^4.17.21",
     "ora": "~5",
     "playwright": "^1.28.1",
     "superjson": "^1.8.0",
-    "ts-jest": "^27.0.7",
+    "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
     "twilio": "^2.5.2",
     "typescript": "^4.5.3",
     "zod": "^3.11.6"
   },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest-environment-jsdom": "^29.7.0"
   }
 }

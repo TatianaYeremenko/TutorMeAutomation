@@ -6,9 +6,15 @@ it("student is able to search a tutor and send a message", async () => {
 
   // get tutor name and id
   const tutorId = "" + t.user.id.toString() + "";
+  console.log(tutorId);
 
   //create student
   const s = await createQaUser("studentWithUmbrella");
+  await s.page.waitForTimeout(3000);
+  await t.page.waitForTimeout(3000);
+
+  await s.page.reload();
+  await t.page.reload();
 
   // go to browse tutors
   await s.struct.footer.browseTutors.waitForVisible();
@@ -16,16 +22,11 @@ it("student is able to search a tutor and send a message", async () => {
   await s.page.keyboard.down("PageDown");
 
   // check filter online available tutors
-  await s.struct.tutors.filter.onlineNow.waitForVisible();
-  await s.struct.tutors.filter.onlineNow.check();
-
-  // check filter online available tutors
-  await s.struct.tutors.filter.onlineNow.waitForVisible();
-  await s.struct.tutors.filter.onlineNow.check();
+  // await (await s.page.waitForSelector('//label[contains(text(),"Online now")]')).click();
 
   // find available tutor
   await s.struct.tutors.tutor(tutorId).name.waitForVisible();
-  await s.struct.tutors.tutor(tutorId).name.click();
+  await s.struct.tutors.tutor(tutorId).card.click();
 
   await s.struct.tutorProfile.contact.waitForVisible();
   await s.struct.tutorProfile.contact.click();

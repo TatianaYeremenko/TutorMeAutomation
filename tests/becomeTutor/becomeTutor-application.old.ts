@@ -291,7 +291,7 @@ describe("Become a Tutor:", () => {
       await struct.userMenu.signOut.click();
     }
   );
-  it(
+  it.only(
     'new "Female" user can apply to complete Tutor Profile from ' + product,
     async () => {
       const { struct, page } = await createVisitor();

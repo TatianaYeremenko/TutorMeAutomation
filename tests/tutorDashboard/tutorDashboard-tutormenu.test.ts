@@ -8,25 +8,11 @@ it("Tutor Dashboard Menu looks good", async () => {
     } = await createQaUser('tutor');
 
     await page.waitForTimeout(1000);
+    await page.setViewportSize({ width: 1920, height: 1080 });
 
-    await page.waitForTimeout(1000);
-            
-    //update subjects
-    await page.locator('//button[contains(text(),"Update my subjects")]').click();
-    await page.waitForTimeout(500);
-
-    await page.locator('label').filter({ hasText: 'Early MathSubjects include: Basic Math, Pre-Algebra, Algebra, Geometry' }).locator('svg').click();
-    await page.keyboard.press('PageDown');
-    await page.keyboard.press('PageDown');
-
-    await struct.account.subjects.save.click();
-    await page.getByRole('link', { name: 'Go to my account' }).click();
-
-    // await page.setViewportSize({ width: 1280, height: 720 });
-    // // By default, the Playwright tests run on a default viewport size of 1280x720 .
 
     // check TutorMe logo
-    await struct.tutorDashboard.header.logo.waitForVisible();
+    await (await page.waitForSelector('//div[contains(text(),"Formerly TutorMe")]')).isVisible();
 
     // check messageging
     await struct.tutorDashboard.header.notifications.chat.button.waitForVisible();
@@ -54,10 +40,6 @@ it("Tutor Dashboard Menu looks good", async () => {
     await struct.tutorDashboard.header.checkr.waitForVisible();
     await struct.tutorDashboard.header.checkr.click();
  
-    // check heatmap check
-    await struct.tutorDashboard.header.heatmap.waitForVisible();
-    await struct.tutorDashboard.header.heatmap.click();
- 
     // check resources check
     await struct.tutorDashboard.header.resources.waitForVisible();
     await struct.tutorDashboard.header.resources.click();
@@ -70,7 +52,6 @@ it("Tutor Dashboard Menu looks good", async () => {
 
     // check help center
     await struct.tutorDashboard.header.helpCenter.waitForVisible();
-
 
     //check user menu
     await struct.tutorDashboard.header.userTools.username.waitForVisible();

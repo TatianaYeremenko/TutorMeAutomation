@@ -26,7 +26,7 @@ it('suspended user should not be able to signIn, instead should get a warning me
 
     // Click support link support@tutorme.com
     await struct.authPages.authError.suspended.waitForVisible();
-    expect(await struct.authPages.authError.support.text()).toBe('support@tutorme.com');
+    expect(await struct.authPages.authError.support.text()).toBe('support-testing@tutor.peardeck.com');
 
     await struct.authPages.authError.button.waitForVisible();
     await struct.authPages.authError.button.click();
