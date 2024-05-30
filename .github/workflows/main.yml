@@ -19,7 +19,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  
       - name: Install NPM
         run:  npm install
-              npm audit fix
+      - name: fix errors
+        run:  npm audit fix
       - name: select env
         run:  export DOMAIN=stg-tutor.peardeck.com
       - name: Run test
