@@ -4,8 +4,10 @@ on:
     branches: [main, master]
   pull_request:  
     branches: [main, master] 
+  schedule:
+    - cron: '30 5,17 * * *'  
 jobs:
-  tests_1:
+  Footer_Test:
     timeout-minutes: 600
     runs-on: ubuntu-latest
     steps:
