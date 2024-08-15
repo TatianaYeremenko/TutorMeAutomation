@@ -17,6 +17,7 @@ it.each`
     await struct.authPages.signIn.recaptcha.waitForVisible();
     await fillRecaptcha(struct.authPages.signIn.recaptcha);
     await struct.authPages.signIn.recaptcha.waitForVisible();
+    await page.waitForTimeout(2000);
 
     await Promise.all([
       page.waitForNavigation({
@@ -26,14 +27,11 @@ it.each`
       struct.authPages.signIn.signIn.click(),
     ]);
 
-    //click on avatar
-    await struct.header.userTools.username.click();
-    await struct.userMenu.switchTooltip.waitForVisible();
-    expect(await struct.userMenu.switchTooltip.text()).toBe(
-      "When turned off, you are in student mode and can receive tutoring."
-    );
-    //click on switch
-    await struct.userMenu.switch.click();
+    //switch to a tutor mode
+    await page.getByTestId("header.userTools.openMenu").click();
+    await page
+      .getByRole("menuitem", { name: "Switch to tutor mode" })
+      .click();
 
     // click on Continue
     await struct.modals.tutorApplicationRejected.waitForVisible();
@@ -47,3 +45,6 @@ it.each`
     await struct.userMenu.signOut.click();
   }
 );
+
+
+//   // ${"blockedtutor@local.tutorme.com"}  | ${"Bb22558800!"} | ${"Blocked"}
