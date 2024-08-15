@@ -1,6 +1,7 @@
 import faker, { random } from "faker";
 import { product } from "../../lib/shared";
-describe("Create Tutor Account: ", () => {
+import { userEmail } from "../../lib/test-config";
+describe("Create Female Tutor Account: ", () => {
   // names
   const userFirstName = faker.name.firstName(1);
   const userLastName = faker.name.lastName();
@@ -8,9 +9,9 @@ describe("Create Tutor Account: ", () => {
 
   // create email and password
   const email = `${userFirstName}${userLastName}tutor@local.tutorme.com`;
-  console.log(email);
+  // console.log(email);
   const password = "Tutor12345!";
-  console.log(password);
+  // console.log(password);
 
   //enter head line
   const headLine = [
@@ -19,7 +20,7 @@ describe("Create Tutor Account: ", () => {
     "20+ years in Teaching",
   ];
 
-  it("Add New Tutor Info through Admin account", async () => {
+  it(`Tutor is added through Admin Panel - user name is ${email.toLowerCase()} and password is ${password}`, async () => {
     //create Admin
     const a = await createAdmin();
 
@@ -147,7 +148,7 @@ describe("Create Tutor Account: ", () => {
     await a.page.getByTestId("header.userTools.openMenu").click();
     await a.page.getByTestId("userMenu.myAccount").click();
 
-    await a.page.getByTestId("tutorApp.profile.avatar.changeButton").click();
+    await (await a.page.waitForSelector('//div[contains(text(),"Change photo")]')).click();
     await a.page.waitForTimeout(1000);
 
     await a.page
@@ -188,7 +189,11 @@ describe("Create Tutor Account: ", () => {
       .getByRole("menuitem", { name: "Switch to tutor mode" })
       .click();
 
-    await a.page.getByRole("button", { name: "Accept Cookies" }).click();
+    await (await a.page.waitForSelector('//button[contains(text(),"Review your subjects")]')).click();
+    await a.page.waitForTimeout(100);
+    await a.page.getByRole("button", { name: "Save selections" }).click();
+    await a.page.waitForTimeout(100);
+    await (await a.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
 
     await a.page
       .getByTestId("tutorDashboard.header.userTools.openMenu")
