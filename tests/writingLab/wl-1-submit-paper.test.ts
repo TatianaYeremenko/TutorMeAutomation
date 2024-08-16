@@ -110,13 +110,17 @@ describe("WL test", function () {
     await page.waitForTimeout(1000);
 
     // upload invalid file
+    
+    await page.locator('//span[contains(text(),"Upload a Microsoft Word (.docx) file")]').check();
+    // await page.setInputFiles('//input[@aria-label="Upload a Microsoft Word (.docx) file"]', "lib/files/invalidDoc.docx" );
+
     await struct.modals.writingLab.content.fileInput.selectFiles(
       "lib/files/invalidDoc.docx"
     );
     await page.waitForTimeout(1000);
 
     // error should be dispalyed
-    console.log(await struct.modals.writingLab.content.fileError.text());
+    expect(await struct.modals.writingLab.content.fileError.text()).toBe('Document must be more than 500 characters.');
     await struct.modals.writingLab.content.file("fileUpload-1").remove.click();
 
     // upload file
@@ -129,6 +133,11 @@ describe("WL test", function () {
     await struct.modals.writingLab.content.characters.waitForVisible();
     await struct.modals.writingLab.content.estimatedTime.waitForVisible();
     await struct.modals.writingLab.content.timeEstimate.waitForVisible();
+
+    // click on Submit
+    await struct.modals.writingLab.content.submit.waitForVisible();
+    await struct.modals.writingLab.content.submit.click();
+    await page.waitForTimeout(1000);
 
     //click on the link Code of Conduct
     const [pageHonorCode] = await Promise.all([
