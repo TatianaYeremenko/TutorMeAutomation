@@ -8,12 +8,21 @@ it("Three different tutors cancel WL", async () => {
     const t = await createQaUser("tutor");
 
     // tutor click on "live lesson
+
+    await (await t.page.waitForSelector('//button[contains(text(),"Review your subjects")]')).click();
+    await t.page.waitForTimeout(100);
+    await t.page.getByRole("button", { name: "Save selections" }).click();
+    await t.page.waitForTimeout(100);
+    await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
+
+
     await t.struct.tutorDashboard.header.pastTutoring.waitForVisible();
     await t.struct.tutorDashboard.header.pastTutoring.click();
 
     await t.struct.tutorDashboard.header.availableTutoring.waitForVisible();
     await t.struct.tutorDashboard.header.availableTutoring.click();
 
+    await t.page.locator('//span[contains(text(),"Writing Labs")]').click();
     await (await t.page.waitForSelector('text="Writing Lab"')).click();
 
     // click on Claim
