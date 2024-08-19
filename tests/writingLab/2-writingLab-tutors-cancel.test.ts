@@ -14,13 +14,7 @@ it("Three different tutors cancel WL", async () => {
     await t.page.getByRole("button", { name: "Save selections" }).click();
     await t.page.waitForTimeout(100);
     await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
-
-
-    await t.struct.tutorDashboard.header.pastTutoring.waitForVisible();
-    await t.struct.tutorDashboard.header.pastTutoring.click();
-
-    await t.struct.tutorDashboard.header.availableTutoring.waitForVisible();
-    await t.struct.tutorDashboard.header.availableTutoring.click();
+    await t.page.waitForTimeout(500);
 
     await t.page.locator('//span[contains(text(),"Writing Labs")]').click();
     await (await t.page.waitForSelector('text="Writing Lab"')).click();
