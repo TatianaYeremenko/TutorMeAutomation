@@ -13,8 +13,16 @@ it("student is able to search a tutor and send a message", async () => {
   await s.page.waitForTimeout(3000);
   await t.page.waitForTimeout(3000);
 
+  await (await t.page.waitForSelector('//button[contains(text(),"Review your subjects")]')).click();
+  await t.page.waitForTimeout(100);
+  await t.page.getByRole("button", { name: "Save selections" }).click();
+  await t.page.waitForTimeout(100);
+  await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
+ 
+
   await s.page.reload();
   await t.page.reload();
+
 
   // go to browse tutors
   await s.struct.footer.browseTutors.waitForVisible();
