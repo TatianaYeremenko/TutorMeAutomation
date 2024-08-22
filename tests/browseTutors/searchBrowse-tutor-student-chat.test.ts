@@ -9,6 +9,13 @@ it("student requests a lesson directly but tutor rejects it", async () => {
   let tutorId = t.user.id.toString();
   let name = t.user.shortName.toString();
 
+  await (await t.page.waitForSelector('//button[contains(text(),"Review your subjects")]')).click();
+  await t.page.waitForTimeout(100);
+  await t.page.getByRole("button", { name: "Save selections" }).click();
+  await t.page.waitForTimeout(100);
+  await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
+ 
+
   //create student
   const s = await createQaUser("studentWithUmbrella");
   await s.page.setViewportSize({ width: 1024, height: 768 });
@@ -74,13 +81,13 @@ it("student requests a lesson directly but tutor rejects it", async () => {
 
     return rtlDirCheck.test(ss);
   }
-  console.log(
+  // console.log(
     checkRTL(
       await t.struct.header.notifications.chat
         .contact(s.user.id.toString())
         .text.text()
     )
-  );
+  // );
 
   // student sign out
   await s.struct.header.userTools.username.click();
