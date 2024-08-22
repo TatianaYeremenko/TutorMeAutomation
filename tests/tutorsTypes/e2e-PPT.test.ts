@@ -73,4 +73,99 @@ describe("E2E PPT: ", () => {
     //tutor signs out
     await struct.userMenu.signOut.click();
   });
+  it("Part-Time Tutor are able to connect with a K-12 student", async () => {
+    // create tutor
+    const t = await createVisitor();
+
+    // create tutor
+    const s = await createQaUser('studentWithUmbrella');
+
+     // the tutor signs in
+    await t.struct.authPages.signIn.email.waitForVisible();
+    await t.struct.authPages.signIn.email.fill(email.toLowerCase());
+
+    await t.struct.authPages.signIn.password.waitForVisible();
+    await t.struct.authPages.signIn.password.type(password);
+
+    await t.page.waitForTimeout(2000);
+    await fillRecaptcha(t.struct.authPages.signIn.recaptcha);
+    await t.page.waitForTimeout(1000);
+
+    await t.struct.authPages.signIn.signIn.waitForVisible();
+    await t.struct.authPages.signIn.signIn.click();
+    await t.page.waitForTimeout(3000);
+
+    // submit the request
+    await s.struct.homepage.requestATutor.waitForVisible();
+    await s.struct.homepage.requestATutor.click();
+
+    await s.page.locator('label').filter({ hasText: '5th grade' }).click();
+    await s.struct.sessionRequest.nextArrow.click();
+  
+    await s.page.locator('label').filter({ hasText: 'Other' }).click();
+    await s.struct.sessionRequest.nextArrow.click();
+  
+    await s.page.locator('label').filter({ hasText: 'Music' }).click();
+    await s.struct.sessionRequest.nextArrow.click();
+    
+    let student_disc = 'automation testing K-12 student requests the tutoring and connects to Part-Time tutor';
+
+    await s.page.getByTestId('sessionRequest.description').click();
+    await s.page.getByTestId('sessionRequest.description').fill(student_disc);
+    await s.page.waitForTimeout(2000);
+
+    await s.struct.sessionRequest.nextArrow.click();
+    await s.page.waitForTimeout(1000);
+
+    await s.page.locator('label').filter({ hasText: 'I am so lost' }).click();
+
+    await s.page.locator('label').filter({ hasText: 'Audio only' }).click();
+    await s.struct.sessionRequest.nextArrow.click();
+    await s.page.waitForTimeout(1000);    
+
+    // move to the confirmation page
+    await s.struct.sessionRequest.codeOfConduct.click();
+    await s.struct.sessionRequest.requestTutor.click();
+    await s.page.waitForTimeout(1000);
+
+    // a tutor get in the queue
+    await t.page.locator('//button[@aria-label="Enter the queue? off"]').click();
+    await t.page.waitForTimeout(5000);
+
+    //tutor review the request claims it
+    await t.struct.modals.claimLesson.content.claim.waitForVisible();
+    await t.struct.modals.claimLesson.content.claim.waitForVisible();
+
+    await t.struct.modals.claimLesson.content.claim.click();
+    await t.page.waitForTimeout(1000);
+
+    await t.struct.modals.firstTime.content.gotIt.waitForVisible();
+    await t.struct.modals.firstTime.content.gotIt.click();
+    await t.page.waitForTimeout(10000);
+
+
+    // student ends the lesson
+    await s.struct.lessonSpace.header.end.waitForVisible();
+    await s.struct.lessonSpace.header.end.click();
+
+    await s.struct.modals.endLesson.content.end.waitForVisible();
+    await s.struct.modals.endLesson.content.end.click();
+
+    await s.struct.modals.somethingWentWrong.content.browseTutors.waitForVisible();
+    await s.struct.modals.somethingWentWrong.content.browseTutors.click();
+
+    // click on user menu
+    await s.struct.header.userTools.username.click();
+    await s.struct.userMenu.signOut.click();
+
+    //tutor return to the dashboard
+    await t.struct.modals.somethingWentWrong.content.goToDashboard.waitForVisible();
+    await t.struct.modals.somethingWentWrong.content.goToDashboard.click();
+    await t.page.waitForTimeout(1000);    
+
+    //tutor signs out
+    await t.struct.tutorDashboard.header.userTools.username.click();
+    await t.struct.userMenu.signOut.click();
+  });
 });
+
