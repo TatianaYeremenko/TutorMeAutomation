@@ -59,7 +59,7 @@ describe("E2E BYOT: ", () => {
     //tutor signs out
     await struct.userMenu.signOut.click();
   });
-  it("BYOT  are able to connect a BYOT account student", async () => {
+  it("BYOT  is able to connect a BYOT account student", async () => {
     // create tutor
     const t = await createVisitor();
 
