@@ -134,8 +134,6 @@ describe("E2E PPT: ", () => {
 
     //tutor review the request claims it
     await t.struct.modals.claimLesson.content.claim.waitForVisible();
-    await t.struct.modals.claimLesson.content.claim.waitForVisible();
-
     await t.struct.modals.claimLesson.content.claim.click();
     await t.page.waitForTimeout(1000);
 
