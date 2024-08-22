@@ -73,7 +73,7 @@ describe("E2E PPT: ", () => {
     //tutor signs out
     await struct.userMenu.signOut.click();
   });
-  it("Part-Time Tutor are able to connect with a K-12 student", async () => {
+  it("Part-Time Tutor is able to connect with a K-12 student", async () => {
     // create tutor
     const t = await createVisitor();
 
