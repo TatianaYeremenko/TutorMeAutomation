@@ -6,7 +6,7 @@ describe("E2E VIPkids: ", () => {
   jest.setTimeout(1000000);
 
   const email = "tutor.vipkid@local.peardeck.com";
-  const student_email = "student.vipkid@local.peardeck.com";
+  //  const student_email ='student.vipkid@local.peardeck.com';
   const password = "VIPcheck1234!";
 
   it("Check VIPkids Tutor Dashboard", async () => {
@@ -137,8 +137,7 @@ describe("E2E VIPkids: ", () => {
 
     await t.struct.authPages.signIn.signIn.waitForVisible();
     await t.struct.authPages.signIn.signIn.click();
-
-    await t.page.waitForTimeout(2000);
+    await t.page.waitForTimeout(3000);
 
     // submit the request
     await s.struct.homepage.requestATutor.waitForVisible();
@@ -189,7 +188,7 @@ describe("E2E VIPkids: ", () => {
 
     await t.struct.modals.firstTime.content.gotIt.waitForVisible();
     await t.struct.modals.firstTime.content.gotIt.click();
-    await t.page.waitForTimeout(3000);
+    await t.page.waitForTimeout(10000);
 
     // student ends the lesson
     await s.struct.lessonSpace.header.end.waitForVisible();
