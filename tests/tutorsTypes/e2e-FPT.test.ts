@@ -57,7 +57,7 @@ describe("E2E FPT: ", () => {
     //tutor signs out
     await struct.userMenu.signOut.click();
   });
-  it("Tutor with FP check are able to connect with a FP student", async () => {
+  it("Tutor with FP check is able to connect with a FP student", async () => {
     // create tutor
     const t = await createVisitor();
 
