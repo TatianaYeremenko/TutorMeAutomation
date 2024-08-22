@@ -117,7 +117,7 @@ describe("E2E VIPkids: ", () => {
     //tutor signs out
     await struct.userMenu.signOut.click();
   });
-  it("Tutor with VIPKids trait are able to connect with a K-12 student", async () => {
+  it("Tutor with VIPKids trait is able to connect with a K-12 student", async () => {
     // create tutor
     const t = await createVisitor();
 
