@@ -76,12 +76,21 @@ describe("WL test", function () {
     await page.waitForTimeout(2000);
     
     //only wl should be available
-    await struct.homepage.writingLab.waitForVisible();
-    await struct.homepage.requestATutor.waitForHidden();
 
-    await struct.homepage.writingLab.click();
+    const element_test = page.locator('#modals.writingLabExpired.content.resubmit');
+    if (await element_test.count() > 0) {
+      // Element exists, do something with it
+      await struct.modals.writingLabExpired.content.resubmit.click();
+      await struct.modals.writingLab.content.close.click();
+
+    } else {
+      await struct.homepage.writingLab.waitForVisible();
+      await struct.homepage.requestATutor.waitForHidden();
+      await struct.homepage.writingLab.click();
+    }
 
     // check the validation message for required fields
+
     // empty title
     await struct.modals.writingLab.content.title.waitForVisible();
     await struct.modals.writingLab.content.title.type("");
