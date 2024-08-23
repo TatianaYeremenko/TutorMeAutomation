@@ -21,8 +21,9 @@ it("Three different tutors cancel WL", async () => {
     await t.struct.tutorDashboard.header.availableTutoring.waitForVisible();
     await t.struct.tutorDashboard.header.availableTutoring.click();
 
-    await t.page.locator('//span[contains(text(),"Writing Labs")]').click();
+    await t.page.getByRole('link', { name: 'Writing Labs' }).click();
     await (await t.page.waitForSelector('text="Writing Lab"')).click();
+   
 
     // click on Claim
     await t.struct.modals.writingLabClaim.content.claim.waitForVisible();
