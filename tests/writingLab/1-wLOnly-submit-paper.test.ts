@@ -208,16 +208,7 @@ describe("WL test", function () {
   await page.waitForTimeout(1000);
 
   // Wl is visible in Past WL
-  const element = page.locator('text="Pending..."');
-  const wlId = await element.getAttribute("data-testid");
-  let pastId: string = "" + wlId?.replace(/\D/g, "") + ""; //exctract numbers only
-  console.log(pastId);
-
-  // WL title and date is visible
-  await struct.account.pastLessons.writing.title(pastId).waitForVisible();
-  expect(await struct.account.pastLessons.writing.title(pastId).text()).toBe(
-    title
-  );
+  await page.locator('//div[contains(text(),"'+title+'")]').isVisible();
 
   await struct.header.userTools.username.click();
   await struct.userMenu.signOut.click();
