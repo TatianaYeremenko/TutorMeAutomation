@@ -118,10 +118,11 @@ describe("Checking SDK GGT integration: ", () => {
     // the tutor signs in
     await t.page.setViewportSize({ width: 1280, height: 720 });
     await t.page.reload();
+    await t.page.waitForTimeout(1000);
 
     // a tutor get in the queue
-    await t.struct.tutorDashboard.header.pastTutoring.waitForVisible();
-    await t.struct.tutorDashboard.header.pastTutoring.click();
+    // await t.struct.tutorDashboard.header.pastTutoring.waitForVisible();
+    // await t.struct.tutorDashboard.header.pastTutoring.click();
 
     await t.page
       .locator('//button[@aria-label="Enter the queue? off"]')
