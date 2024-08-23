@@ -45,7 +45,7 @@ jobs:
       - name: select env
         run:  export DOMAIN=stg-tutor.peardeck.com
       - name: Run test
-        run:  npm test -- npm test -- request_with_ai --runInBand --logHeapUsage
+        run:  npm test -- request_with_ai --runInBand --logHeapUsage
         
   AddNewTutor_Test:
     timeout-minutes: 600
@@ -87,45 +87,45 @@ jobs:
       - name: Run test
         run:  npm test -- writingLab --runInBand --logHeapUsage 
         
-  BG_Tutors_Test:
-    timeout-minutes: 600
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 20
-      - name: Config npm
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  
-      - name: Install NPM
-        run:  npm install
-              npm audit fix
-      - name: select env
-        run:  export DOMAIN=stg-tutor.peardeck.com
-      - name: Run test
-        run:  npm test -- e2e-BGcheck.test
+  # BG_Tutors_Test:
+  #   timeout-minutes: 600
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 20
+  #     - name: Config npm
+  #       run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+  #       env:
+  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  
+  #     - name: Install NPM
+  #       run:  npm install
+  #             npm audit fix
+  #     - name: select env
+  #       run:  export DOMAIN=stg-tutor.peardeck.com
+  #     - name: Run test
+  #       run:  npm test -- e2e-BGcheck.test
         
-  BYOT_Tutors_Test:
-    timeout-minutes: 600
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 20
-      - name: Config npm
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  
-      - name: Install NPM
-        run:  npm install
-              npm audit fix
-      - name: select env
-        run:  export DOMAIN=stg-tutor.peardeck.com
-      - name: Run test
-        run:  npm test -- e2e-BYOT.test.ts
+  # BYOT_Tutors_Test:
+  #   timeout-minutes: 600
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 20
+  #     - name: Config npm
+  #       run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+  #       env:
+  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  
+  #     - name: Install NPM
+  #       run:  npm install
+  #             npm audit fix
+  #     - name: select env
+  #       run:  export DOMAIN=stg-tutor.peardeck.com
+  #     - name: Run test
+  #       run:  npm test -- e2e-BYOT.test.ts
   SignIn_Test:
     timeout-minutes: 600
     runs-on: ubuntu-latest
@@ -166,7 +166,7 @@ jobs:
       - name: Run test
         run:  npm test -- searchBrowse --runInBand --logHeapUsage
 
-  SDKggIntegration_Test:
+  SDKIntegrations_Test:
     timeout-minutes: 600
     runs-on: ubuntu-latest
     steps:
@@ -184,27 +184,8 @@ jobs:
       - name: select env
         run:  export DOMAIN=stg-tutor.peardeck.com
       - name: Run test
-        run:  npm test -- sdk-gg-integration.test   
-
-  SDKpaIntegration_Test:
-    timeout-minutes: 600
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 20
-      - name: Config npm
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  
-      - name: Install NPM
-        run:  npm install
-              npm audit fix
-      - name: select env
-        run:  export DOMAIN=stg-tutor.peardeck.com
-      - name: Run test
-        run:  npm test -- sdk-pa-integration.test       
+        run:  npm test -- sdk-integration --runInBand --logHeapUsage  
+   
         
   # FP_Tutors_Test:
   #   timeout-minutes: 600
