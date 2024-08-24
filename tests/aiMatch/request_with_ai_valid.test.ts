@@ -1,22 +1,17 @@
-it.only("Match Pal is available", async () => {
-  const { struct, page } = await createVisitor();
-  // await page.goto('https://aiasstv2.trial.tutorme.dev/sign-in/');
+it("Match Pal is available", async () => {
+  const { struct, page } = await createQaUser('studentWithUmbrella');
 
-  //connect with a tutor
-  // sign in
-  await struct.authPages.signIn.email.waitForVisible();
-  await struct.authPages.signIn.email.fill("ai-user@local.tutor.peardeck.com");
-
-  await struct.authPages.signIn.password.waitForVisible();
-  await struct.authPages.signIn.password.type("AI@go!");
-
-  await page.waitForTimeout(2000);
-  await fillRecaptcha(struct.authPages.signIn.recaptcha);
+  await struct.homepage.requestATutor.click();
   await page.waitForTimeout(1000);
 
-  await struct.authPages.signIn.signIn.waitForVisible();
-  await struct.authPages.signIn.signIn.click();
-  await page.waitForTimeout(1000);
+  await page.locator("label").filter({ hasText: "6th grade" }).click();
+  await struct.sessionRequest.nextArrow.click();
+
+  await page.locator("label").filter({ hasText: "Math" }).click();
+  await struct.sessionRequest.nextArrow.click();
+
+  await page.locator("label").filter({ hasText: "Basic Math" }).click();
+  await struct.sessionRequest.nextArrow.click();
 
   await struct.homepage.requestATutor.click();
   await page.waitForTimeout(1000);
@@ -62,24 +57,7 @@ it.only("Match Pal is available", async () => {
 });
 
 it("student should be able to continue with the request after five attempts", async () => {
-  const { struct, page } = await createVisitor();
-  // await page.goto('https://aiasstv2.trial.tutorme.dev/sign-in/');
-
-  //connect with a tutor
-  // sign in
-  await struct.authPages.signIn.email.waitForVisible();
-  await struct.authPages.signIn.email.fill("ai-user@local.tutor.peardeck.com");
-
-  await struct.authPages.signIn.password.waitForVisible();
-  await struct.authPages.signIn.password.type("AI@go!");
-
-  await page.waitForTimeout(2000);
-  await fillRecaptcha(struct.authPages.signIn.recaptcha);
-  await page.waitForTimeout(1000);
-
-  await struct.authPages.signIn.signIn.waitForVisible();
-  await struct.authPages.signIn.signIn.click();
-  await page.waitForTimeout(1000);
+  const { struct, page } = await createQaUser('studentWithUmbrella');
 
   await struct.homepage.requestATutor.click();
   await page.waitForTimeout(1000);
