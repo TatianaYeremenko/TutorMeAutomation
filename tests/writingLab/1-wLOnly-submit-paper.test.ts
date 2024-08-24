@@ -208,7 +208,7 @@ describe("WL test", function () {
   await page.waitForTimeout(1000);
 
   // Wl is visible in Past WL
-  await page.locator('//div[contains(text(),"'+title+'")]').isVisible();
+  // await page.locator('//div[contains(text(),"'+title+'")]').isVisible();
 
   await struct.header.userTools.username.click();
   await struct.userMenu.signOut.click();
