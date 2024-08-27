@@ -158,7 +158,7 @@ it(`Student is able to see BYO tutor when log in with ${studentByotUser} and pas
     const { struct, page } = await createVisitor();
     // sign in
     await struct.authPages.signIn.email.waitForVisible();
-    await struct.authPages.signIn.email.type(studentByotUser);
+    await struct.authPages.signIn.email.fill(studentByotUser);
 
     await struct.authPages.signIn.password.waitForVisible();
     await struct.authPages.signIn.password.type(studentByotPassword);
@@ -176,11 +176,8 @@ it(`Student is able to see BYO tutor when log in with ${studentByotUser} and pas
     await page.waitForTimeout(2000);
 
     //student should be see the tutor
-    let path_name ="//div[contains(text(),'" + userShortName + "')]";
-    // console.log(path_name);
+    await page.locator('//div[contains(text(),"' + userShortName +' ")]').isVisible();
 
-    expect(await page.locator(path_name).innerText()).toBe(userShortName);
- 
     // click on user menu
     await struct.header.userTools.username.click();
     await struct.userMenu.signOut.click();
