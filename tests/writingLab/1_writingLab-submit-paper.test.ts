@@ -46,6 +46,9 @@ describe("WL test", function () {
   it("Umbrella student submits WL and check the past records", async () => {
     const { page, struct } = await createQaUser("studentWithUmbrella");
 
+    await page.waitForLoadState('load');
+
+
     await struct.homepage.writingLab.waitForVisible();
     await struct.homepage.writingLab.click();
     //   await page.getByRole('button', { name: 'Submit your writing assignment' }).click();
@@ -158,6 +161,9 @@ describe("WL test", function () {
     await struct.modals.writingLab.content.returnToHomepage.waitForVisible();
     await struct.modals.writingLab.content.returnToHomepage.click();
     await page.waitForTimeout(1000);
+
+    await page.waitForLoadState('load');
+
 
     //click on User Usage again
     await struct.header.userTools.openMenu.click();
