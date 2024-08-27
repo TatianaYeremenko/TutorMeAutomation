@@ -48,7 +48,6 @@ describe("WL test", function () {
 
     await page.waitForLoadState('load');
 
-
     await struct.homepage.writingLab.waitForVisible();
     await struct.homepage.writingLab.click();
     //   await page.getByRole('button', { name: 'Submit your writing assignment' }).click();
@@ -160,12 +159,11 @@ describe("WL test", function () {
     // click on Return Home
     await struct.modals.writingLab.content.returnToHomepage.waitForVisible();
     await struct.modals.writingLab.content.returnToHomepage.click();
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
 
     //click on User Usage again
     await page.goto('https://stg-tutor.peardeck.com/account/');
     await page.waitForLoadState('load');
-
     // await struct.userMenu.myAccount.waitForVisible();
     // await struct.userMenu.myAccount.click();
     await struct.account.usage.click();
@@ -177,7 +175,9 @@ describe("WL test", function () {
     );
 
     //click on User Past Lesson
-    await struct.header.userTools.openMenu.click();
+    await page.goto('https://stg-tutor.peardeck.com/account/');
+    await page.waitForLoadState('load');
+    
     await struct.userMenu.pastLessons.waitForVisible();
     await struct.userMenu.pastLessons.click();
 
