@@ -40,7 +40,7 @@ describe("WL test", function () {
 
   // discription of wl
   let wlDiscription =  "Description: " + faker.lorem.words(40).toString();
-  let title = `Title: submitted from automation ${faker.lorem.words(1).toString()}`;
+  let title = `Title: submitted automation ${faker.lorem.words(1).toString()}`;
 
 
   it("WL Only Umbrella student submits WL and check the past records", async () => {
@@ -74,6 +74,7 @@ describe("WL test", function () {
     await struct.authPages.signIn.signIn.click();
 
     await page.waitForTimeout(2000);
+    await page.reload();
     
     //only wl should be available
 
@@ -83,11 +84,12 @@ describe("WL test", function () {
       await struct.modals.writingLabExpired.content.resubmit.click();
       await struct.modals.writingLab.content.close.click();
 
-    } else {
-      await struct.homepage.writingLab.waitForVisible();
-      await struct.homepage.requestATutor.waitForHidden();
-      await struct.homepage.writingLab.click();
-    }
+    } 
+
+    await struct.homepage.writingLab.waitForVisible();
+    await struct.homepage.requestATutor.waitForHidden();
+    await struct.homepage.writingLab.click();
+    
 
     // check the validation message for required fields
 
@@ -192,23 +194,27 @@ describe("WL test", function () {
   await page.waitForTimeout(1000);
 
   //click on User Usage again
-  await struct.header.userTools.openMenu.click();
-  await struct.userMenu.myAccount.waitForVisible();
-  await struct.userMenu.myAccount.click();
+  // await struct.header.userTools.openMenu.click();
+  // await struct.userMenu.myAccount.waitForVisible();
+  // await struct.userMenu.myAccount.click();
+  await page.goto('https://stg-tutor.peardeck.com/account/');
+  await page.waitForLoadState('load');
   await struct.account.usage.click();
 
   // check the Limit again
   await struct.account.usageDetails.remaining.waitForVisible();
 
   //click on User Past Lesson
-  await struct.header.userTools.openMenu.click();
+  await page.goto('https://stg-tutor.peardeck.com/account/');
+  await page.waitForLoadState('load');
+  // await struct.header.userTools.openMenu.click();
   await struct.userMenu.pastLessons.waitForVisible();
   await struct.userMenu.pastLessons.click();
 
   await page.waitForTimeout(1000);
 
   // Wl is visible in Past WL
-  // await page.locator('//div[contains(text(),"'+title+'")]').isVisible();
+  await page.locator('//div[contains(text(),"'+title+'")]').isVisible();
 
   await struct.header.userTools.username.click();
   await struct.userMenu.signOut.click();
