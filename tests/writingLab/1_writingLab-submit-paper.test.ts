@@ -162,13 +162,12 @@ describe("WL test", function () {
     await struct.modals.writingLab.content.returnToHomepage.click();
     await page.waitForTimeout(1000);
 
+    //click on User Usage again
+    await page.goto('https://stg-tutor.peardeck.com/account/');
     await page.waitForLoadState('load');
 
-
-    //click on User Usage again
-    await struct.header.userTools.openMenu.click();
-    await struct.userMenu.myAccount.waitForVisible();
-    await struct.userMenu.myAccount.click();
+    // await struct.userMenu.myAccount.waitForVisible();
+    // await struct.userMenu.myAccount.click();
     await struct.account.usage.click();
 
     // check the Limit again
