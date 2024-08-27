@@ -1,4 +1,4 @@
-it("Match Pal is available", async () => {
+it.only("Match Pal is available", async () => {
   const { struct, page } = await createQaUser('studentWithUmbrella');
 
   await struct.homepage.requestATutor.click();
