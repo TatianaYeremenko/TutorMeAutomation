@@ -205,11 +205,11 @@ describe("WL test", function () {
   await struct.account.usageDetails.remaining.waitForVisible();
 
   //click on User Past Lesson
-  await page.goto('https://stg-tutor.peardeck.com/account/');
+  await page.goto('https://stg-tutor.peardeck.com/history/');
   await page.waitForLoadState('load');
   // await struct.header.userTools.openMenu.click();
-  await struct.userMenu.pastLessons.waitForVisible();
-  await struct.userMenu.pastLessons.click();
+  // await struct.userMenu.pastLessons.waitForVisible();
+  // await struct.userMenu.pastLessons.click();
 
   await page.waitForTimeout(1000);
 
