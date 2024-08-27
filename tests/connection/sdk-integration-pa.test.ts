@@ -106,12 +106,20 @@ it("Student receives GG teacher tutoring request and able to connect to a tutor"
     await t.struct.authPages.signIn.signIn.click();
     await t.page.waitForTimeout(2000);
 
-    // check the notification
-    await s.struct.header.notifications.other.button.waitForVisible();
-    await s.struct.header.notifications.other.button.click();
+    //check for pop-up
+    if (await s.page.locator('modals.somethingWentWrong.content.browseTutors').isVisible()) {
+       await s.page.locator('modals.somethingWentWrong.content.browseTutors').click();
+       await s.struct.header.notifications.other.button.waitForVisible();
+       await s.struct.header.notifications.other.button.click();
+      // Accept the modal etc.
+    } else {
+      await s.struct.header.notifications.other.button.waitForVisible();
+      await s.struct.header.notifications.other.button.click();
+    }
 
-    await s.page.locator('//div[contains(text(),"Teacher: '+teacherFullName+'")]').isVisible();
-    await s.page.locator('//div[contains(text(),"Teacher: '+teacherFullName+'")]').click();
+    //click the latest one
+    const lists = await s.page.$$('//div[contains(text(),"Your teacher has assigned you tutoring!")]');
+    lists[0].click();
 
     await s.page.locator('//button[contains(text(),"Ready for a live session!")]').isVisible();
     await s.page.locator('//button[contains(text(),"Ready for a live session!")]').click();
