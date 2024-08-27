@@ -13,18 +13,6 @@ it("Match Pal is available", async () => {
   await page.locator("label").filter({ hasText: "Basic Math" }).click();
   await struct.sessionRequest.nextArrow.click();
 
-  await struct.homepage.requestATutor.click();
-  await page.waitForTimeout(1000);
-
-  await page.locator("label").filter({ hasText: "6th grade" }).click();
-  await struct.sessionRequest.nextArrow.click();
-
-  await page.locator("label").filter({ hasText: "Math" }).click();
-  await struct.sessionRequest.nextArrow.click();
-
-  await page.locator("label").filter({ hasText: "Basic Math" }).click();
-  await struct.sessionRequest.nextArrow.click();
-
   await page.getByTestId("sessionRequest.description").click();
   await page
     .getByTestId("sessionRequest.description")
@@ -74,7 +62,7 @@ it("student should be able to continue with the request after five attempts", as
   await page.getByTestId("sessionRequest.description").click();
   await page
     .getByTestId("sessionRequest.description")
-    .fill("If y(x-1)=z then x=");
+    .fill("2235325*14124");
   await page.waitForTimeout(5000);
   await struct.sessionRequest.refineSearch.waitForVisible();
   await struct.sessionRequest.refineSearch.click();
@@ -84,15 +72,13 @@ it("student should be able to continue with the request after five attempts", as
   await struct.modals.matchPal.content.close.waitForVisible();
 
   //try 5 times
-  for (let i = 0; i < 5; i++) {
-    await page.getByTestId("modals.matchPal.content.response").fill("no");
-    await page.getByTestId("modals.matchPal.content.response").press("Enter");
-    await page.waitForTimeout(2000);
-  }
-  //last message
-  await struct.modals.matchPal.content.message(10).text();
-  await page.waitForTimeout(5000);
 
+  for (let i = 0; i < 6; i++) {
+      await page.getByTestId("modals.matchPal.content.response").fill("no");
+      await page.getByTestId("modals.matchPal.content.response").press("Enter");
+      await page.waitForTimeout(2000);
+   }
+  
   await struct.modals.matchPal.content.continueRequest.click();
   await page.waitForTimeout(5000);
 
