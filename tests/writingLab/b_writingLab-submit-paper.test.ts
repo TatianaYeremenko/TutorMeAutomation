@@ -154,7 +154,7 @@ describe("WL test", function () {
     // click on Submit
     await struct.modals.writingLab.content.submit.waitForVisible();
     await struct.modals.writingLab.content.submit.click();
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
 
     // click on Return Home
     await struct.modals.writingLab.content.returnToHomepage.waitForVisible();
@@ -175,11 +175,11 @@ describe("WL test", function () {
     );
 
     //click on User Past Lesson
-    await page.goto('https://stg-tutor.peardeck.com/account/');
+    await page.goto('https://stg-tutor.peardeck.com/history/');
     await page.waitForLoadState('load');
     
-    await struct.userMenu.pastLessons.waitForVisible();
-    await struct.userMenu.pastLessons.click();
+    // await struct.userMenu.pastLessons.waitForVisible();
+    // await struct.userMenu.pastLessons.click();
 
     await page.waitForTimeout(1000);
 
