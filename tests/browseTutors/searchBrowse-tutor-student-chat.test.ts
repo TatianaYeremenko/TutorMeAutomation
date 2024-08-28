@@ -18,6 +18,7 @@ it("student requests a lesson directly but tutor rejects it", async () => {
 
   //create student
   const s = await createQaUser("studentWithUmbrella");
+  await s.page.waitForLoadState('load')
   await s.page.keyboard.press('PageDown');
   await s.page.keyboard.press('PageDown');
 
@@ -26,14 +27,15 @@ it("student requests a lesson directly but tutor rejects it", async () => {
   await s.struct.footer.browseTutors.waitForVisible();
   await s.struct.footer.browseTutors.click();
   await s.page.waitForTimeout(2000);
+  console.log('here');
 
   // find available tutor
-  // let tutor_url = `https://stg-tutor.peardeck.com/tutors/${tutorId}/`
-  // console.log(tutor_url);
+  let tutor_num = tutorId.toString();
+  console.log(tutor_num);
   // await s.page.goto(tutorId);
 
-  await s.struct.tutors.tutor(tutorId).name.waitForVisible();
-  await s.struct.tutors.tutor(tutorId).card.click();
+  await s.struct.tutors.tutor(tutor_num).name.waitForVisible();
+  await s.struct.tutors.tutor(tutor_num).card.click();
 
   // chat
   await s.struct.tutorProfile.contact.waitForVisible();
