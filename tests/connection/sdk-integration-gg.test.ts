@@ -65,6 +65,9 @@ it('Submit GG Teacher tutoring request', async () => {
   await page.locator('//button[contains(text(),"Copy and close")]').click();
   await page.waitForTimeout(1000);
 
+  // const sdk_url= await page.locator('//div[button[contains(text(),"Copy link")]]').innerText();  
+  // console.log(sdk_url.toString().slice(0,-9));
+
 
 });
 it("Student receives GG teacher tutoring request and able to connect to a tutor", async () => {
@@ -143,24 +146,20 @@ it("Student receives GG teacher tutoring request and able to connect to a tutor"
     await t.struct.lessonSpace.sessionPlan.teacherNotes.waitForVisible();
     await t.page.waitForTimeout(10000);
 
-    // student ends the lesson
-    await s.struct.lessonSpace.header.end.waitForVisible();
-    await s.struct.lessonSpace.header.end.click();
+    // tutor voids the lesson
+    await t.struct.lessonSpace.header.void.waitForVisible();
+    await t.struct.lessonSpace.header.void.click();
 
-    await s.struct.modals.endLesson.content.end.waitForVisible();
-    await s.struct.modals.endLesson.content.end.click();
+    await t.struct.modals.voidLesson.content.void.waitForVisible();
+    await t.struct.modals.voidLesson.content.void.click();
 
-    await s.struct.modals.somethingWentWrong.content.browseTutors.waitForVisible();
-    await s.struct.modals.somethingWentWrong.content.browseTutors.click();
+    await s.struct.modals.tutorVoided.content.browseTutors.waitForVisible();
+    await s.struct.modals.tutorVoided.content.browseTutors.click();
 
     // click on user menu
     await s.struct.header.userTools.username.click();
     await s.struct.userMenu.signOut.click();
 
-    //tutor return to the dashboard
-    await t.struct.modals.somethingWentWrong.content.goToDashboard.waitForVisible();
-    await t.struct.modals.somethingWentWrong.content.goToDashboard.click();
-    await t.page.waitForTimeout(1000);
 
     //tutor signs out
     await t.struct.tutorDashboard.header.userTools.username.click();
