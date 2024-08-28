@@ -107,15 +107,9 @@ it("Student receives GG teacher tutoring request and able to connect to a tutor"
     await t.page.waitForTimeout(2000);
 
     //check for pop-up
-    if (await s.page.locator('modals.somethingWentWrong.content.browseTutors').isVisible()) {
-       await s.page.locator('modals.somethingWentWrong.content.browseTutors').click();
-       await s.struct.header.notifications.other.button.waitForVisible();
-       await s.struct.header.notifications.other.button.click();
-      // Accept the modal etc.
-    } else {
       await s.struct.header.notifications.other.button.waitForVisible();
       await s.struct.header.notifications.other.button.click();
-    }
+
 
     //click the latest one
     const lists = await s.page.$$('//div[contains(text(),"Your teacher has assigned you tutoring!")]');
@@ -128,7 +122,7 @@ it("Student receives GG teacher tutoring request and able to connect to a tutor"
     // the tutor signs in
     await t.page.setViewportSize({ width: 1280, height: 720 });
     await t.page.reload();
-    await s.page.waitForTimeout(1000);
+    await t.page.waitForTimeout(1000);
 
     // a tutor get in the queue
     // await t.struct.tutorDashboard.header.pastTutoring.waitForVisible();
@@ -150,24 +144,20 @@ it("Student receives GG teacher tutoring request and able to connect to a tutor"
     await t.struct.lessonSpace.sessionPlan.tutorGoals('Expressions & Equations').waitForVisible();
     await t.page.waitForTimeout(10000);
 
-    // student ends the lesson
-    await s.struct.lessonSpace.header.end.waitForVisible();
-    await s.struct.lessonSpace.header.end.click();
+    // tutor voids the lesson
+    await t.struct.lessonSpace.header.void.waitForVisible();
+    await t.struct.lessonSpace.header.void.click();
 
-    await s.struct.modals.endLesson.content.end.waitForVisible();
-    await s.struct.modals.endLesson.content.end.click();
+    await t.struct.modals.voidLesson.content.void.waitForVisible();
+    await t.struct.modals.voidLesson.content.void.click();
 
-    await s.struct.modals.somethingWentWrong.content.browseTutors.waitForVisible();
-    await s.struct.modals.somethingWentWrong.content.browseTutors.click();
+    await s.struct.modals.tutorVoided.content.browseTutors.waitForVisible();
+    await s.struct.modals.tutorVoided.content.browseTutors.click();
 
     // click on user menu
     await s.struct.header.userTools.username.click();
     await s.struct.userMenu.signOut.click();
 
-    //tutor return to the dashboard
-    await t.struct.modals.somethingWentWrong.content.goToDashboard.waitForVisible();
-    await t.struct.modals.somethingWentWrong.content.goToDashboard.click();
-    await t.page.waitForTimeout(1000);
 
     //tutor signs out
     await t.struct.tutorDashboard.header.userTools.username.click();
