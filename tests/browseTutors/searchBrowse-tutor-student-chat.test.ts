@@ -3,7 +3,6 @@ import faker, { random } from "faker";
 it("student requests a lesson directly but tutor rejects it", async () => {
   //create tutor
   const t = await createQaUser("tutor");
-  await t.page.setViewportSize({ width: 1024, height: 768 });
 
   // get tutor name and id
   let tutorId = t.user.id.toString();
@@ -14,18 +13,25 @@ it("student requests a lesson directly but tutor rejects it", async () => {
   await t.page.getByRole("button", { name: "Save selections" }).click();
   await t.page.waitForTimeout(100);
   await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
- 
+  await t.page.waitForTimeout(3000);
+
 
   //create student
   const s = await createQaUser("studentWithUmbrella");
-  await s.page.setViewportSize({ width: 1024, height: 768 });
+  await s.page.keyboard.press('PageDown');
+  await s.page.keyboard.press('PageDown');
+
 
   // go to browse tutors
   await s.struct.footer.browseTutors.waitForVisible();
   await s.struct.footer.browseTutors.click();
-  await s.page.keyboard.down("PageDown");
+  await s.page.waitForTimeout(2000);
 
   // find available tutor
+  // let tutor_url = `https://stg-tutor.peardeck.com/tutors/${tutorId}/`
+  // console.log(tutor_url);
+  // await s.page.goto(tutorId);
+
   await s.struct.tutors.tutor(tutorId).name.waitForVisible();
   await s.struct.tutors.tutor(tutorId).card.click();
 
@@ -81,7 +87,7 @@ it("student requests a lesson directly but tutor rejects it", async () => {
 
     return rtlDirCheck.test(ss);
   }
-  // console.log(
+  // console.log();
     checkRTL(
       await t.struct.header.notifications.chat
         .contact(s.user.id.toString())
