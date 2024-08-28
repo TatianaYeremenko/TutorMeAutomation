@@ -3,10 +3,12 @@ import faker, { random } from "faker";
 it("student requests a lesson directly but tutor rejects it", async () => {
   //create tutor
   const t = await createQaUser("tutor");
+  const s = await createQaUser("studentWithUmbrella");
 
   // get tutor name and id
-  let tutorId = t.user.id.toString();
-  let name = t.user.shortName.toString();
+  const tutorId = t.user.id.toString();
+  const name = t.user.shortName.toString();
+  const tutor_num = tutorId.toString();
 
   await (await t.page.waitForSelector('//button[contains(text(),"Review your subjects")]')).click();
   await t.page.waitForTimeout(100);
@@ -17,14 +19,15 @@ it("student requests a lesson directly but tutor rejects it", async () => {
 
 
   //create student
-  const s = await createQaUser("studentWithUmbrella");
   await s.page.goto('https://stg-tutor.peardeck.com/tutors/');
-  await s.page.waitForLoadState('load')
+  await s.page.reload();
+  await t.page.reload();
 
   // find available tutor
-  let tutor_num = tutorId.toString();
-
   await s.struct.tutors.tutor(tutor_num).name.waitForVisible();
+  await s.struct.tutors.tutor(tutor_num).card.waitForVisible();
+  await s.struct.tutors.tutor(tutor_num).avatar.waitForVisible();
+  await s.struct.tutors.tutor(tutor_num).viewProfile.waitForVisible();
   await s.struct.tutors.tutor(tutor_num).card.click();
 
   // chat
