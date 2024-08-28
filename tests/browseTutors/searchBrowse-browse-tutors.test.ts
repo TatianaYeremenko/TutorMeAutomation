@@ -1,15 +1,15 @@
 import faker, { random } from "faker";
 
 it("student is able to search a tutor and send a message", async () => {
-  //create student
+  //create student and tutor
   const t = await createQaUser("tutor");
+  const s = await createQaUser("studentWithUmbrella");
 
   // get tutor name and id
   const tutorId = "" + t.user.id.toString() + "";
-  console.log(tutorId);
+  // console.log(tutorId);
 
-  //create student
-  const s = await createQaUser("studentWithUmbrella");
+  //refresh the page
   await s.page.waitForTimeout(3000);
   await t.page.waitForTimeout(3000);
 
@@ -20,17 +20,10 @@ it("student is able to search a tutor and send a message", async () => {
   await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
  
 
+  // go to browse tutors
+  await s.page.goto('https://stg-tutor.peardeck.com/tutors/');
   await s.page.reload();
   await t.page.reload();
-
-
-  // go to browse tutors
-  await s.struct.footer.browseTutors.waitForVisible();
-  await s.struct.footer.browseTutors.click();
-  await s.page.keyboard.down("PageDown");
-
-  // check filter online available tutors
-  // await (await s.page.waitForSelector('//label[contains(text(),"Online now")]')).click();
 
   // find available tutor
   await s.struct.tutors.tutor(tutorId).name.waitForVisible();
