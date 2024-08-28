@@ -13,26 +13,16 @@ it("student requests a lesson directly but tutor rejects it", async () => {
   await t.page.getByRole("button", { name: "Save selections" }).click();
   await t.page.waitForTimeout(100);
   await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
-  await t.page.waitForTimeout(3000);
+  await t.page.waitForTimeout(10000);
 
 
   //create student
   const s = await createQaUser("studentWithUmbrella");
+  await s.page.goto('https://stg-tutor.peardeck.com/tutors/');
   await s.page.waitForLoadState('load')
-  await s.page.keyboard.press('PageDown');
-  await s.page.keyboard.press('PageDown');
-
-
-  // go to browse tutors
-  await s.struct.footer.browseTutors.waitForVisible();
-  await s.struct.footer.browseTutors.click();
-  await s.page.waitForTimeout(2000);
-  console.log('here');
 
   // find available tutor
   let tutor_num = tutorId.toString();
-  console.log(tutor_num);
-  // await s.page.goto(tutorId);
 
   await s.struct.tutors.tutor(tutor_num).name.waitForVisible();
   await s.struct.tutors.tutor(tutor_num).card.click();
