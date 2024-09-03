@@ -6,7 +6,7 @@
         struct,
         page,
         user
-    } = await createQaUser('tutor');
+    } =  await createQaTutor();
 
     await page.waitForTimeout(1000);
 
