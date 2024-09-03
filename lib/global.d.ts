@@ -19,6 +19,12 @@ declare function createQaUser(kind: keyof typeof qaUserButtons): Promise<{
   struct: StructApi;
 }>;
 
+declare function createQaTutor(): Promise<{
+  page: Page;
+  user: UserData;
+  struct: StructApi;
+}>;
+
 declare function getUserData(page: Page): Promise<UserData | undefined>;
 
 declare function createVisitor(): Promise<{
@@ -72,6 +78,7 @@ declare interface IModalApi<T> extends IElementApi {
   close(): Promise<void>;
   content: ApiFor<T>;
 }
+
 
 type RenameKey<K> = K extends `${infer ModalName}Modal`
   ? ModalName
