@@ -2,7 +2,8 @@ import { values } from "lodash";
 
 it("Curriculum Areas is available and tutotrs able to edit", async () => {
   //create tutor
-  const { struct, page, user } = await createQaUser("tutor");
+  const { struct, page, user } =  await createQaTutor();
+
 
   await page.waitForTimeout(1000);
   await page.setViewportSize({ width: 1920, height: 1080 });
@@ -72,16 +73,16 @@ it("Curriculum Areas is available and tutotrs able to edit", async () => {
   // check the information
   await (
     await page.waitForSelector(
-      '//div[contains(text(),"Don\'t see a subject you used to tutor in? Click")]'
+      '//div[contains(text(),"If you wish to add subjects that are currently disabled on your profil")]'
     )
   ).isVisible();
 
-  const [page1] = await Promise.all([
-    page.waitForEvent("popup"),
-    page.getByRole("link", { name: "here" }).click(),
-  ]);
-  expect(page1.url().toString()).toContain("https://help.tutor.peardeck.com");
-  await page1.close();
+  await (
+    await page.waitForSelector(
+      '//button[contains(text(),"support team")]'
+    )
+  ).isVisible();
+
 
     // submit the changes
     await struct.account.subjects.save.waitForVisible();
