@@ -187,6 +187,8 @@ global.createVisitor = function createVisitor() {
   });
 };
 
+
+
 global.createAdmin = function createAdmin() {
   return withOra("create admin", async () => {
     const page = await launchBrowser(`${BASE_URL}/api/v1/qa/`);
@@ -231,6 +233,38 @@ global.createQaUser = function createQaUser(kind: keyof typeof qaUserButtons) {
   });
 };
 
+global.createQaTutor = function createQaTutor() {
+  return withOra(`create tutor`, async (log) => {
+    const mode = 'approved';
+    if (!mode) {
+      throw new Error(`Unknown user kind`);
+    }
+    const page = await launchBrowser(`${BASE_URL}/api/v1/qa/`);
+    await page.click(`[name='${mode}']`, { timeout: 10000 });
+    await page.waitForFunction("window.tutormeLoaded", { timeout: 10000 });
+        
+    await (await page.waitForSelector('//button[contains(text(),"Review your subjects")]')).click();
+    await page.waitForTimeout(100);
+    await page.getByRole("button", { name: "Save selections" }).click();
+    await page.waitForTimeout(100);
+    await (await page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
+
+    const user = await getUserData(page);
+    if (!user) {
+      throw new Error("Can't get user data");
+    }
+    log(`tutor created`);
+    return {
+      page,
+      user,
+      struct: buildApi(page, source),
+    };
+  });
+};
+
+
+
+
 global.sleep = function sleep(ms: number) {
   if (!ms) {
     return Promise.resolve();
@@ -256,6 +290,7 @@ global.fillRecaptcha = function (element: IElementApi) {
     await sleep(100);
   });
 };
+
 
 const reduxStateZ = z.object({
   auth: z.object({
@@ -283,7 +318,6 @@ class ElementApi implements IElementApi {
   protected readonly selector = `[data-testid='${this.testId}']`;
 
   constructor(protected readonly page: Page, public readonly testId: string) {}
-
   async exists() {
     const handle = await this.page.$(this.selector);
     return !!handle;
@@ -314,6 +348,7 @@ class ElementApi implements IElementApi {
   async text() {
     return (await this.page.textContent(this.selector, { strict: true })) ?? "";
   }
+  
 }
 
 class ButtonApi extends ElementApi implements IButtonApi {
@@ -406,7 +441,6 @@ class ModalApi<T> extends ElementApi implements IModalApi<T> {
     });
   }
 }
-
 function buildApi<T extends StructRecord[string]>(
   page: Page,
   rec: T,
