@@ -92,6 +92,7 @@ import faker, {
       await struct.account.tutorProfile.education(0).end.select.press('Enter');
 
       await (await page.waitForSelector('//button[contains(text(),"Submit")]')).click();
+      await page.waitForTimeout(500);
       await struct.toast.success.waitForVisible();
       await page.waitForTimeout(2000);
 
