@@ -5,7 +5,7 @@ it("Tutor Dashboard Menu looks good", async () => {
         struct,
         page,
         user
-    } = await createQaUser('tutor');
+    } =  await createQaTutor();
 
     await page.waitForTimeout(1000);
     await page.setViewportSize({ width: 1920, height: 1080 });
@@ -47,6 +47,7 @@ it("Tutor Dashboard Menu looks good", async () => {
     // check demo
     await struct.tutorDashboard.header.demoLessonSpace.waitForVisible();
     await struct.tutorDashboard.header.demoLessonSpace.click();
+    await page.waitForTimeout(500);
     await struct.demoLessonSpace.header.exit.waitForVisible();
     await struct.demoLessonSpace.header.exit.click();
 
