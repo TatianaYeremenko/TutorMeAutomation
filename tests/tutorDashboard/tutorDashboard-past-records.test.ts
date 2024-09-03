@@ -1,7 +1,7 @@
 it("tutor can able to see the past lessons and wl", async () => {
   //create tutor
-  const { struct, page, user } = await createQaUser("tutor");
-
+  const { struct, page, user } =  await createQaTutor();
+  
   // click on Past Records
   await struct.tutorDashboard.header.pastTutoring.waitForVisible();
   await struct.tutorDashboard.header.pastTutoring.click();
