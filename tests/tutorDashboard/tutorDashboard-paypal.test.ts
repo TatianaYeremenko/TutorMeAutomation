@@ -6,7 +6,7 @@ it("Tutors can access to PayPal", async () => {
         struct,
         page,
         user
-    } = await createQaUser('tutor');
+    } =  await createQaTutor();
     
     // click on PayPal
     await struct.tutorDashboard.header.earnings.waitForVisible();
