@@ -1,6 +1,6 @@
 it("Tutor is available to select Languages", async () => {
   //create tutor
-  const { struct, page, user } = await createQaUser("tutor");
+  const { struct, page, user } =  await createQaTutor();
 
   await page.waitForTimeout(1000);
   await page.setViewportSize({ width: 1920, height: 1080 });
