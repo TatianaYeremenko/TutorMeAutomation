@@ -45,10 +45,3 @@ it.each`
     await struct.userMenu.signOut.click();
   }
 );
-
-
-<<<<<<< HEAD
-//   // ${"blockedtutor@local.tutorme.com"}  | ${"Bb22558800!"} | ${"Blocked"}
-=======
-//   // ${"blockedtutor@local.tutorme.com"}  | ${"Bb22558800!"} | ${"Blocked"}
->>>>>>> a495ae5 (update all)
