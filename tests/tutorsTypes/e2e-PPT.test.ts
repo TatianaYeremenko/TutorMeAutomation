@@ -105,7 +105,7 @@ describe("E2E PPT: ", () => {
     await s.page.locator('label').filter({ hasText: 'Other' }).click();
     await s.struct.sessionRequest.nextArrow.click();
   
-    await s.page.locator('label').filter({ hasText: 'Music' }).click();
+    await s.page.locator('label').filter({ hasText: 'French' }).click();
     await s.struct.sessionRequest.nextArrow.click();
     
     let student_disc = 'automation testing K-12 student requests the tutoring and connects to Part-Time tutor';
@@ -130,10 +130,13 @@ describe("E2E PPT: ", () => {
 
     // a tutor get in the queue
     await t.page.locator('//button[@aria-label="Enter the queue? off"]').click();
-    await t.page.waitForTimeout(5000);
+    await t.page.waitForTimeout(4000);
+
 
     //tutor review the request claims it
     await t.struct.modals.claimLesson.content.claim.waitForVisible();
+    await t.struct.modals.claimLesson.content.description.waitForVisible();
+
     await t.struct.modals.claimLesson.content.claim.click();
     await t.page.waitForTimeout(1000);
 
@@ -143,23 +146,23 @@ describe("E2E PPT: ", () => {
 
 
     // student ends the lesson
-    await s.struct.lessonSpace.header.end.waitForVisible();
-    await s.struct.lessonSpace.header.end.click();
+    await t.struct.lessonSpace.header.void.waitForVisible();
+    await t.struct.lessonSpace.header.void.click();
 
-    await s.struct.modals.endLesson.content.end.waitForVisible();
-    await s.struct.modals.endLesson.content.end.click();
+    await t.struct.modals.voidLesson.content.void.waitForVisible();
+    await t.struct.modals.voidLesson.content.void.click();
 
-    await s.struct.modals.somethingWentWrong.content.browseTutors.waitForVisible();
-    await s.struct.modals.somethingWentWrong.content.browseTutors.click();
+    await s.struct.modals.tutorVoided.content.browseTutors.waitForVisible();
+    await s.struct.modals.tutorVoided.content.browseTutors.click();
 
     // click on user menu
     await s.struct.header.userTools.username.click();
     await s.struct.userMenu.signOut.click();
 
     //tutor return to the dashboard
-    await t.struct.modals.somethingWentWrong.content.goToDashboard.waitForVisible();
-    await t.struct.modals.somethingWentWrong.content.goToDashboard.click();
-    await t.page.waitForTimeout(1000);    
+    // await t.struct.modals.somethingWentWrong.content.goToDashboard.waitForVisible();
+    // await t.struct.modals.somethingWentWrong.content.goToDashboard.click();
+    // await t.page.waitForTimeout(1000);    
 
     //tutor signs out
     await t.struct.tutorDashboard.header.userTools.username.click();

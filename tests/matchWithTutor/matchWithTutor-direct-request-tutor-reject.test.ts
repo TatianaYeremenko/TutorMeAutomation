@@ -18,13 +18,18 @@ it("student requests a lesson directly but tutor rejects it", async () => {
 
   // find available tutor
   await s.struct.tutors.tutor(tutorId).name.waitForVisible();
+<<<<<<< HEAD
   await s.struct.tutors.tutor(tutorId).name.click();
+=======
+  await s.struct.tutors.tutor(tutorId).card.click();
+>>>>>>> a495ae5 (update all)
 
   //click on Start Lesson
   await s.struct.tutorProfile.requestLesson.waitForVisible();
   await s.struct.tutorProfile.requestLesson.click();
 
   // select a subject form modal
+<<<<<<< HEAD
   await s.struct.modals.connectTutor.waitForVisible();
   await s.struct.modals.connectTutor.content.subjectSelect.click();
   await s.struct.modals.connectTutor.content.subjectSelect.press("ArrowDown");
@@ -42,6 +47,31 @@ it("student requests a lesson directly but tutor rejects it", async () => {
   await t.struct.modals.request.content.reject.click();
   await t.page.waitForTimeout(1000);
 
+=======
+  await s.page.getByTestId("modals.connectTutor.content.subjectSelect").click();
+  await s.page
+    .getByTestId("modals.connectTutor.content.subjectSelect")
+    .press("ArrowDown");
+  await s.page
+    .getByRole("listbox", { name: "Select a subject" })
+    .press("ArrowDown");
+  await s.page
+    .getByRole("listbox", { name: "Select a subject" })
+    .press("Enter");
+
+  // await s.page.getByTestId('modals.connectTutor.content.option(10016).option').click();
+  await s.page.getByRole("button", { name: "Send session request" }).click();
+
+  // modal pops up
+  s.struct.modals.waitingForTutor.waitForVisible();
+
+  // tutor accepts the request
+  t.struct.modals.request.waitForVisible();
+  t.struct.modals.request.content.reject.waitForVisible();
+  t.struct.modals.request.content.reject.click();
+  await s.page.waitForTimeout(1000);
+
+>>>>>>> a495ae5 (update all)
   //student see the tutor's rejection
   await s.struct.modals.requestRejected.content.okay.waitForVisible();
   await s.struct.modals.requestRejected.content.okay.click();
@@ -65,8 +95,20 @@ it("student requests a lesson directly but tutor rejects it", async () => {
 
   await t.struct.tutorDashboard.header.notifications.chat.button.waitForVisible();
   await t.struct.tutorDashboard.header.notifications.chat.button.click();
+<<<<<<< HEAD
 
   expect(await t.struct.header.notifications.chat.contact(s.user.id.toString()).text.text()).toBe('Hello, I would like to schedule a lesson, please let me when you are available');
+=======
+  await t.page.waitForTimeout(10000);
+
+  expect(
+    await t.struct.header.notifications.chat
+      .contact(s.user.id.toString())
+      .text.text()
+  ).toBe(
+    "Hello, I would like to schedule a lesson, please let me when you are available"
+  );
+>>>>>>> a495ae5 (update all)
 
   // student sign out
   await s.struct.header.userTools.username.click();
@@ -75,5 +117,8 @@ it("student requests a lesson directly but tutor rejects it", async () => {
   //tutor signs out
   await t.struct.tutorDashboard.header.userTools.username.click();
   await t.struct.userMenu.signOut.click();
+<<<<<<< HEAD
 
+=======
+>>>>>>> a495ae5 (update all)
 });

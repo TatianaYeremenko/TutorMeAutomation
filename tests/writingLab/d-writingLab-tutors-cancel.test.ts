@@ -16,6 +16,9 @@ it("Three different tutors cancel WL", async () => {
     await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
     await t.page.waitForTimeout(500);
 
+    // red dot is visible
+    await t.page.locator('//*[@id="react-app"]/div/div[4]/div/nav/div[2]/div[1]/div/a/div').isVisible();
+
     await t.page.locator('//span[contains(text(),"Writing Labs")]').click();
     await (await t.page.waitForSelector('text="Writing Lab"')).click();
 

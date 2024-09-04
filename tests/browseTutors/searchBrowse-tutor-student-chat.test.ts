@@ -2,7 +2,11 @@ import faker, { random } from "faker";
 
 it("student requests a lesson directly but tutor rejects it", async () => {
   //create tutor
+<<<<<<< HEAD
   const t = await createQaUser("tutor");
+=======
+  const t = await createQaTutor();
+>>>>>>> a495ae5 (update all)
   const s = await createQaUser("studentWithUmbrella");
 
   // get tutor name and id
@@ -10,6 +14,7 @@ it("student requests a lesson directly but tutor rejects it", async () => {
   const name = t.user.shortName.toString();
   const tutor_num = tutorId.toString();
 
+<<<<<<< HEAD
   await (await t.page.waitForSelector('//button[contains(text(),"Review your subjects")]')).click();
   await t.page.waitForTimeout(100);
   await t.page.getByRole("button", { name: "Save selections" }).click();
@@ -22,6 +27,13 @@ it("student requests a lesson directly but tutor rejects it", async () => {
   await s.page.goto('https://stg-tutor.peardeck.com/tutors/');
   await s.page.reload();
   await t.page.reload();
+=======
+  //create student
+  await t.page.waitForTimeout(3000);
+  await s.struct.header.browseTutors.waitForVisible();
+  await s.struct.header.browseTutors.click();
+  await s.page.waitForTimeout(3000);
+>>>>>>> a495ae5 (update all)
 
   // find available tutor
   await s.struct.tutors.tutor(tutor_num).name.waitForVisible();

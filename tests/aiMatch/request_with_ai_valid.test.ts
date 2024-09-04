@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 it.only("Match Pal is available", async () => {
+=======
+it("Match Pal is available", async () => {
+>>>>>>> a495ae5 (update all)
   const { struct, page } = await createQaUser('studentWithUmbrella');
 
   await struct.homepage.requestATutor.click();

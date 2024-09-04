@@ -1,29 +1,12 @@
 import faker, { random } from "faker";
 
 it("A matchpal window is open and the invalid input entering check works, as well as messages are displayed", async () => {
-    const { struct, page } = await createVisitor();
-    // await page.goto('https://aiasstv2.trial.tutorme.dev/sign-in/');
-  
-    //connect with a tutor
-    // sign in
-    await struct.authPages.signIn.email.waitForVisible();
-    await struct.authPages.signIn.email.fill("ai-user@local.tutor.peardeck.com");
-  
-    await struct.authPages.signIn.password.waitForVisible();
-    await struct.authPages.signIn.password.type("AI@go!");
-  
-    await page.waitForTimeout(2000);
-    await fillRecaptcha(struct.authPages.signIn.recaptcha);
-    await page.waitForTimeout(1000);
-  
-    await struct.authPages.signIn.signIn.waitForVisible();
-    await struct.authPages.signIn.signIn.click();
-  
-    await page.waitForTimeout(3000);
-  
+    const { struct, page } = await createQaUser('studentWithUmbrella');
+
     await struct.homepage.requestATutor.waitForVisible();
     await struct.homepage.requestATutor.click();
-  
+    await page.waitForTimeout(1000);
+
     await page.locator("label").filter({ hasText: "6th grade" }).click();
     await struct.sessionRequest.nextArrow.click();
     await page.waitForTimeout(2000);

@@ -181,7 +181,7 @@ describe("E2E VIPkids: ", () => {
 
     //tutor review the request claims it
     await t.struct.modals.claimLesson.content.claim.waitForVisible();
-    await t.struct.modals.claimLesson.content.claim.waitForVisible();
+    await t.struct.modals.claimLesson.content.description.waitForVisible();
 
     await t.struct.modals.claimLesson.content.claim.click();
     await t.page.waitForTimeout(1000);
@@ -190,24 +190,20 @@ describe("E2E VIPkids: ", () => {
     await t.struct.modals.firstTime.content.gotIt.click();
     await t.page.waitForTimeout(10000);
 
-    // student ends the lesson
-    await s.struct.lessonSpace.header.end.waitForVisible();
-    await s.struct.lessonSpace.header.end.click();
 
-    await s.struct.modals.endLesson.content.end.waitForVisible();
-    await s.struct.modals.endLesson.content.end.click();
+    // void the lesson
+    await t.struct.lessonSpace.header.void.waitForVisible();
+    await t.struct.lessonSpace.header.void.click();
 
-    await s.struct.modals.somethingWentWrong.content.browseTutors.waitForVisible();
-    await s.struct.modals.somethingWentWrong.content.browseTutors.click();
+    await t.struct.modals.voidLesson.content.void.waitForVisible();
+    await t.struct.modals.voidLesson.content.void.click();
+
+    await s.struct.modals.tutorVoided.content.browseTutors.waitForVisible();
+    await s.struct.modals.tutorVoided.content.browseTutors.click();
 
     // click on user menu
     await s.struct.header.userTools.username.click();
-    await s.struct.userMenu.signOut.click();
-
-    //tutor return to the dashboard
-    await t.struct.modals.somethingWentWrong.content.goToDashboard.waitForVisible();
-    await t.struct.modals.somethingWentWrong.content.goToDashboard.click();
-    await t.page.waitForTimeout(1000);
+    await s.struct.userMenu.signOut.click(); 
 
     //tutor signs out
     await t.struct.tutorDashboard.header.userTools.username.click();

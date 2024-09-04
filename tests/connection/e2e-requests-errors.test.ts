@@ -12,4 +12,8 @@ const [request] = await Promise.all([
 console.log('Requests timing ' + request.redirectedFrom());
 console.log('Request failure error' + request.failure());
 
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> a495ae5 (update all)

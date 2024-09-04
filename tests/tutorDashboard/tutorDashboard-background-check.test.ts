@@ -58,4 +58,8 @@ it("Background Check is available fo tutotrs", async () => {
     await struct.tutorDashboard.header.userTools.openMenu.click();
     await struct.userMenu.signOut.click();
 
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> a495ae5 (update all)

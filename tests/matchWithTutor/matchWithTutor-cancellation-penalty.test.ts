@@ -1,6 +1,7 @@
 import faker from "faker";
 
 describe("cancellation penalty", () => {
+<<<<<<< HEAD
     it("student cancels request, the cancellation message displays", async () => {
         //estimated time 73 s
         jest.setTimeout(950000);
@@ -93,4 +94,109 @@ describe("cancellation penalty", () => {
 
 
     });
+=======
+  it("student cancels request, the cancellation message displays", async () => {
+    //estimated time 73 s
+    jest.setTimeout(950000);
+
+    //open student account
+    const { struct, page } = await createQaUser("studentWithUmbrella");
+
+    //connect with a tutor
+    await page.getByRole("link", { name: "Request a live tutor" }).click();
+    await page
+      .getByRole("heading", {
+        name: "What subject area do you need help with?",
+      })
+      .click();
+
+    //select main categories
+    await page
+      .locator("label")
+      .filter({ hasText: "Math" })
+      .locator("svg")
+      .first()
+      .click();
+    // go to the Next page
+    await struct.sessionRequest.nextArrow.click();
+    await page.waitForTimeout(2000);
+
+    //select main sub-categories
+    await page
+      .locator("label")
+      .filter({ hasText: "Basic Math" })
+      .locator("svg")
+      .click();
+      await struct.sessionRequest.nextArrow.click();
+
+    // go to the Next page
+    await struct.sessionRequest.nextArrow.click();
+    await page.waitForTimeout(2000);
+
+    // move to the confermation page
+    await page.getByRole("button", { name: "Request a tutor" }).click();
+
+    // move to the waiting page
+    await page
+      .getByRole("heading", { name: "Finding you a tutor..." })
+      .isVisible();
+    await page
+      .getByText(
+        "Are you ready for your session? Please find a quiet place and prepare to share y"
+      )
+      .isVisible();
+
+    //cancell the request
+    await struct.modals.notifyingTutors.content.cancel.click();
+
+    // confirm cancelling
+    await struct.modals.confirmCancel.content.cancel.waitForVisible();
+    await struct.modals.confirmCancel.content.cancel.click();
+
+    // request public request again
+    await page.getByRole("link", { name: "Request a live tutor" }).click();
+
+    await struct.modals.requestPenalty.waitForVisible();
+    await struct.modals.requestPenalty.content.close.click();
+
+    // click on request again
+    await page.getByRole("link", { name: "Request a live tutor" }).click();
+
+    // wait 10 sec
+    await page.waitForTimeout(10000);
+
+    // click on "OK, got it"
+    await struct.modals.requestPenalty.content.okGotIt.click();
+
+    // click on request again
+    await page.getByRole("link", { name: "Request a live tutor" }).click();
+    // request penalty message still displays
+    await struct.modals.requestPenalty.waitForVisible();
+
+    // wait 20 sec
+    await page.waitForTimeout(21000);
+
+    // click on request again
+    await page.getByRole("link", { name: "Request a live tutor" }).click();
+
+    // request form opens
+    await page
+      .getByRole("heading", {
+        name: "What subject area do you need help with?",
+      })
+      .isVisible();
+    // close the page
+    // await page.getByRole("link", { name: "Close dialog" }).click();
+    await struct.sessionRequest.close.click();
+
+    // go back to home page
+    await page
+      .getByRole("heading", { name: "What can a tutor help you with today?" })
+      .isVisible();
+
+    // student signs out
+    await struct.header.userTools.openMenu.click();
+    await struct.userMenu.signOut.click();
+  });
+>>>>>>> a495ae5 (update all)
 });

@@ -14,7 +14,8 @@ it("Three different tutors cancel WL", async () => {
     await t.page.waitForTimeout(100);
     await (await t.page.waitForSelector('//a[contains(text(),"Go to your account")]')).click();
 
-
+    await t.page.waitForTimeout(1000);
+    
     await t.struct.tutorDashboard.header.pastTutoring.waitForVisible();
     await t.struct.tutorDashboard.header.pastTutoring.click();
 
